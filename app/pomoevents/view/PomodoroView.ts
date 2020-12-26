@@ -60,6 +60,11 @@ export class PomodoroView {
         const playPauseIcon = this.getToggleButtonIconForState(state)
         ViewElements.btnToggle_ActiveIcon['image' as any] = playPauseIcon.icon
         ViewElements.btnToggle_PressedIcon['image' as any] = playPauseIcon.iconPressed
+
+        const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
+        const remainingSessionsToLongBreak = this.pomodoro.getRemainingWorkSessionsToLongBreak()
+
+        ViewElements.txtPomodoroSessionsCounter.text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
     }
 
     private onUpdateStateCallback(state: PomodoroState) {

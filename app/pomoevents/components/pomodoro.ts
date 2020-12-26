@@ -100,6 +100,14 @@ export class Pomodoro {
         return this.previousState
     }
 
+    public getSettings(): PomodoroSettings {
+        return this.settings
+    }
+
+    public getRemainingWorkSessionsToLongBreak(): number {
+        return this.finishedSessions % this.settings.numberOfSessionsBeforeBreak
+    }
+
     public getRemainingTimeMs(): number {
         const now = Date.now()
         let remainingTimeMs = -1
