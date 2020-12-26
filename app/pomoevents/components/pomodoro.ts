@@ -12,17 +12,26 @@ export class PomodoroSettings {
     }
 }
 
-enum PomodoroState {
-    Idle = "Idle",
-    Working = "running",
+export enum PomodoroState {
+    Idle = "idle",
+    Working = "working",
     Resting = "resting",
     Paused = "paused"
 }
+
+export type PomodoroStateEvent = (state: PomodoroState) => void
 
 export class Pomodoro {
     private logger: Logger
     private clock: Clock
     private settings: PomodoroSettings
+
+    //events
+    private onEnterState: PomodoroStateEvent
+    private onUpdateState: PomodoroStateEvent
+    //
+
+    //state variables
     private state: PomodoroState
     private previousState: PomodoroState
 
@@ -33,6 +42,7 @@ export class Pomodoro {
     private remainingRestingTimeMs: number = -1
 
     private finishedSessions: number = 0
+    //end state variables
 
     constructor(settings: PomodoroSettings, logger: Logger) {
         this.logger = logger
@@ -41,6 +51,7 @@ export class Pomodoro {
         this.clock = new Clock(ClockGranularity.Seconds, this.onClockUpdate.bind(this))
     }
 
+    //begin public interface
     public start() {
         if (this.state === PomodoroState.Idle) {
             this.changeState(PomodoroState.Working)
@@ -81,10 +92,28 @@ export class Pomodoro {
         return this.state === PomodoroState.Paused
     }
 
+    public getState(): PomodoroState {
+        return this.state
+    }
+
+    public getPreviousState(): PomodoroState {
+        return this.previousState
+    }
+
+    public registerOnEnterStateCallback(callback: PomodoroStateEvent) {
+        this.onEnterState = callback
+    }
+
+    public registerOnUpdateStateCallback(callback: PomodoroStateEvent) {
+        this.onUpdateState = callback
+    }
+    //end public interface
+
     private changeState(newState: PomodoroState) {
         const setNewState = () => {
             this.previousState = this.state
             this.state = newState
+            this.onEnterState(this.state)
         }
 
         switch (newState) {
@@ -134,6 +163,8 @@ export class Pomodoro {
             default:
                 this.logger.warn(`Unexpected state: ${this.state}`)
         }
+
+        this.onUpdateState(this.state)
     }
 
     ///////
