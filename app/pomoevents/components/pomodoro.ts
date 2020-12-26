@@ -47,6 +47,10 @@ export class Pomodoro {
         }
     }
 
+    public isRunning(): boolean {
+        return this.state === PomodoroState.Working || this.state === PomodoroState.Resting
+    }
+
     private changeState(newState: PomodoroState) {
         switch (newState) {
             case PomodoroState.Working:

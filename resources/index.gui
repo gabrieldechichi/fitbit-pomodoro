@@ -1,3 +1,19 @@
 <svg>
-  <rect id="background" />
+  <svg>
+    <!-- TOP LEFT -->
+    <use id="btn-x" href="#combo-button-upper-left" fill="fb-white">
+      <set href="combo-button-icon" attributeName="href" to="icons/x.png"/>
+      <set href="combo-button-icon-press" attributeName="href" to="icons/x_press.png"/>
+    </use>
+    <!-- TOP RIGHT -->
+    <use id="btn-skip" href="#combo-button-upper-right" fill="fb-white">
+      <set href="combo-button-icon" attributeName="href" to="icons/skip.png"/>
+      <set href="combo-button-icon-press" attributeName="href" to="icons/skip_press.png"/>
+    </use>
+    <!-- BOTTOM RIGHT -->
+    <use id="btn-toggle" href="#combo-button-lower-right" fill="fb-white">
+      <set href="combo-button-icon" attributeName="href" to="icons/play.png"/>
+      <set href="combo-button-icon-press" attributeName="href" to="icons/play_press.png"/>
+    </use>
+  </svg>
 </svg>
