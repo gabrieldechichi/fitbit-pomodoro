@@ -100,6 +100,29 @@ export class Pomodoro {
         return this.previousState
     }
 
+    public getRemainingTimeMs(): number {
+        const now = Date.now()
+        let remainingTimeMs = -1
+        switch (this.getState()) {
+            case PomodoroState.Paused:
+                remainingTimeMs = this.getPreviousState() == PomodoroState.Resting ? this.remainingRestingTimeMs : this.remainingWorkingTimeMs
+                break
+            case PomodoroState.Working:
+                remainingTimeMs = this.endWorkingTimeMs - now
+                break
+            case PomodoroState.Resting:
+                remainingTimeMs = this.endRestingTimeMs - now
+                break
+            case PomodoroState.Idle:
+                remainingTimeMs = this.settings.workTimeSeconds * 1000
+                break
+            default:
+                this.logger.warn(`Unexpected Pomdoro State: ${this.getState()}`)
+        }
+
+        return remainingTimeMs
+    }
+
     public registerOnEnterStateCallback(callback: PomodoroStateEvent) {
         this.onEnterState = callback
     }

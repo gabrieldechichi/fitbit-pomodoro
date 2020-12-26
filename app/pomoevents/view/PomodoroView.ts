@@ -1,6 +1,7 @@
 import { Pomodoro, PomodoroState, PomodoroStateEvent } from '../components/pomodoro';
 import { Logger } from 'ts-log';
 import { ViewElements } from './Elements';
+import { ClockFormatter, ClockFormatterSettings } from './ClockFormatter';
 
 class ButtonIcon {
     icon: string
@@ -25,10 +26,12 @@ class ControlIcons {
 export class PomodoroView {
     logger: Logger
     pomodoro: Pomodoro
+    clockFormatter: ClockFormatter
 
     constructor(logger: Logger, pomodoro: Pomodoro) {
         this.logger = logger
         this.pomodoro = pomodoro
+        this.clockFormatter = new ClockFormatter(ClockFormatterSettings.getSettings())
 
         this.pomodoro.registerOnEnterStateCallback(this.onEnterStateCallback.bind(this))
         this.pomodoro.registerOnUpdateStateCallback(this.onUpdateStateCallback.bind(this))
@@ -38,6 +41,7 @@ export class PomodoroView {
         ViewElements.btnReset.addEventListener('activate', this.onResetButtonPressed.bind(this))
 
         this.onEnterStateCallback(this.pomodoro.getState())
+        this.onUpdateStateCallback(this.pomodoro.getState())
     }
 
     //Callbacks
@@ -56,12 +60,11 @@ export class PomodoroView {
         const playPauseIcon = this.getToggleButtonIconForState(state)
         ViewElements.btnToggle_ActiveIcon['image' as any] = playPauseIcon.icon
         ViewElements.btnToggle_PressedIcon['image' as any] = playPauseIcon.iconPressed
-
-        this.onUpdateStateCallback(state)
     }
 
     private onUpdateStateCallback(state: PomodoroState) {
-
+        this.clockFormatter.setMilliSeconds(this.pomodoro.getRemainingTimeMs())
+        ViewElements.txtPomodoroTime.text = this.clockFormatter.toString()
     }
 
     private onToggleButtonPressed(event: MouseEvent) {
