@@ -133,11 +133,13 @@ export class Pomodoro {
 
     public getTargetSessionTimeForCurrentState(): number {
         const getTargetTimeForWorkOrRest = (state: PomodoroState) => {
-            switch (this.getState()) {
+            switch (state) {
                 case PomodoroState.Working:
                     return this.getSettings().workTimeSeconds * 1000
+                    break
                 case PomodoroState.Resting:
                     return (this.isInLongBreak() ? this.getSettings().longBreakTimeSeconds : this.getSettings().shortBreakTimeSeconds) * 1000;
+                    break
                 default:
                     this.logger.warn(`Unexpected State ${state}`)
             }
@@ -173,35 +175,32 @@ export class Pomodoro {
     //end public interface
 
     private changeState(newState: PomodoroState) {
-        const setNewState = () => {
+        const setNewState = (processEnterState: () => void) => {
             this.previousState = this.state
             this.state = newState
+            processEnterState()
             this.onEnterState(this.state)
         }
 
         switch (newState) {
             case PomodoroState.Working:
                 if (this.state !== PomodoroState.Working) {
-                    setNewState()
-                    this.onEnterState_Working()
+                    setNewState(this.onEnterState_Working.bind(this))
                 }
                 break
             case PomodoroState.Idle:
                 if (this.state !== PomodoroState.Idle) {
-                    setNewState()
-                    this.onEnterState_Idle()
+                    setNewState(this.onEnterState_Idle.bind(this))
                 }
                 break
             case PomodoroState.Resting:
                 if (this.state !== PomodoroState.Resting) {
-                    setNewState()
-                    this.onEnterState_Resting()
+                    setNewState(this.onEnterState_Resting.bind(this))
                 }
                 break
             case PomodoroState.Paused:
                 if (this.state !== PomodoroState.Paused) {
-                    setNewState()
-                    this.onEnterState_Paused()
+                    setNewState(this.onEnterState_Paused.bind(this))
                 }
                 break
             default:

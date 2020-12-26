@@ -41,7 +41,6 @@ export class PomodoroView {
         ViewElements.btnReset.addEventListener('activate', this.onResetButtonPressed.bind(this))
 
         this.onEnterStateCallback(this.pomodoro.getState())
-        this.onUpdateStateCallback(this.pomodoro.getState())
     }
 
     //Callbacks
@@ -65,6 +64,8 @@ export class PomodoroView {
         const remainingSessionsToLongBreak = this.pomodoro.getRemainingWorkSessionsToLongBreak()
 
         ViewElements.txtPomodoroSessionsCounter.text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
+
+        this.onUpdateStateCallback(state)
     }
 
     private onUpdateStateCallback(state: PomodoroState) {

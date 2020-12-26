@@ -19,6 +19,7 @@ export class DebugLogger implements Logger {
         console.info(message, ...optionalParams)
     }
     warn(message?: any, ...optionalParams: any[]): void {
+        console.trace()
         console.warn(message, ...optionalParams)
     }
     error(message?: any, ...optionalParams: any[]): void {
