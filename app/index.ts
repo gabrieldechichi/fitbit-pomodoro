@@ -5,6 +5,10 @@ class App {
     constructor() {
         this.pomodoro = new Pomodoro(PomodoroSettings.getSettings())
         this.pomodoro.start()
+        setTimeout(() => {
+            console.log("HEEEEERE")
+            app.pomodoro.stop()
+        }, 5000);
     }
 }
 

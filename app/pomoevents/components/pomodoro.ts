@@ -38,6 +38,12 @@ export class Pomodoro {
         }
     }
 
+    public stop() {
+        if (this.state !== PomodoroState.Idle) {
+            this.changeState(PomodoroState.Idle)
+        }
+    }
+
     private changeState(newState: PomodoroState) {
         switch (newState) {
             case PomodoroState.Working:
@@ -47,6 +53,10 @@ export class Pomodoro {
                 }
                 break
             case PomodoroState.Idle:
+                if (this.state !== PomodoroState.Idle) {
+                    this.state = PomodoroState.Idle
+                    this.onEnterState_Idle()
+                }
                 break
             case PomodoroState.Resting:
                 if (this.state !== PomodoroState.Resting) {
@@ -59,6 +69,7 @@ export class Pomodoro {
         }
     }
 
+    ///////
     private onEnterState_Working() {
         this.endWorkingTimeMs = Date.now() + this.settings.workTimeSeconds * 1000
     }
@@ -71,7 +82,9 @@ export class Pomodoro {
             this.changeState(PomodoroState.Resting)
         }
     }
+    //////
 
+    /////
     private onEnterState_Resting() {
         console.log("-->" + this.finishedSessions + ", " + this.settings.numberOfSessionsBeforeBreak + ", " + this.finishedSessions % this.settings.numberOfSessionsBeforeBreak)
         const breakTimeSeconds = this.finishedSessions % this.settings.numberOfSessionsBeforeBreak === 0
@@ -88,6 +101,15 @@ export class Pomodoro {
             this.changeState(PomodoroState.Working)
         }
     }
+    /////
+
+    private onEnterState_Idle() {
+        console.log("Entering Idle state!")
+    }
+
+    private onStateUpdate_Idle() {
+        console.log("Idle state update!")
+    }
 
     private onClockUpdate(date: Date) {
         switch (this.state) {
@@ -97,6 +119,11 @@ export class Pomodoro {
             case PomodoroState.Resting:
                 this.onStateUpdate_Resting()
                 break
+            case PomodoroState.Idle:
+                this.onStateUpdate_Idle()
+                break
+            default:
+                console.log("Unexpected state: " + this.state)
         }
     }
 }
