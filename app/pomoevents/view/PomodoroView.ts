@@ -2,6 +2,7 @@ import { Pomodoro, PomodoroState, PomodoroStateEvent } from '../components/pomod
 import { Logger } from 'ts-log';
 import { ViewElements } from './elements';
 import { ClockFormatter, ClockFormatterSettings } from './clockFormatter';
+import { Hapitcs, VibrationPattern } from '../device/hapitcs';
 
 class ButtonIcon {
     icon: string
@@ -27,11 +28,13 @@ export class PomodoroView {
     logger: Logger
     pomodoro: Pomodoro
     clockFormatter: ClockFormatter
+    hapitcs: Hapitcs
 
     constructor(logger: Logger, pomodoro: Pomodoro) {
         this.logger = logger
         this.pomodoro = pomodoro
         this.clockFormatter = new ClockFormatter(ClockFormatterSettings.getSettings())
+        this.hapitcs = new Hapitcs()
 
         this.pomodoro.registerOnEnterStateCallback(this.onEnterStateCallback.bind(this))
         this.pomodoro.registerOnUpdateStateCallback(this.onUpdateStateCallback.bind(this))
@@ -66,6 +69,11 @@ export class PomodoroView {
         ViewElements.txtPomodoroSessionsCounter.text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
 
         this.onUpdateStateCallback(state)
+
+        const workAndRestStates = [PomodoroState.Working, PomodoroState.Resting]
+        if (workAndRestStates.indexOf(state) >= 0 && workAndRestStates.indexOf(this.pomodoro.getPreviousState()) >= 0) {
+            this.hapitcs.playVibration(VibrationPattern.Alert, 2)
+        }
     }
 
     private onUpdateStateCallback(state: PomodoroState) {
