@@ -68,8 +68,13 @@ export class PomodoroView {
     }
 
     private onUpdateStateCallback(state: PomodoroState) {
-        this.clockFormatter.setMilliSeconds(this.pomodoro.getRemainingTimeMs())
+        const remainingTimeMs = this.pomodoro.getRemainingTimeMs()
+        this.clockFormatter.setMilliSeconds(remainingTimeMs)
         ViewElements.txtPomodoroTime.text = this.clockFormatter.toString()
+
+        const targetTime = this.pomodoro.getTargetSessionTimeForCurrentState()
+
+        ViewElements.arcPomodoroProgress.sweepAngle = Math.ceil(((targetTime - remainingTimeMs) / targetTime) * 360)
     }
 
     private onToggleButtonPressed(event: MouseEvent) {

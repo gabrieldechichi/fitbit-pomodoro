@@ -10,5 +10,5 @@ export class ViewElements {
 
     static txtPomodoroTime: GraphicsElement = <GraphicsElement>document.getElementById('countdown-counter')
     static txtPomodoroSessionsCounter: GraphicsElement = <GraphicsElement>document.getElementById('interval-counter')
-    static arcPomodoroProgress: GraphicsElement = <GraphicsElement>document.getElementById('countdown-arc')
+    static arcPomodoroProgress: ArcElement = <ArcElement>document.getElementById('countdown-arc')
 }

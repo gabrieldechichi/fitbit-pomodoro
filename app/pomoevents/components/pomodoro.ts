@@ -2,9 +2,9 @@ import { Logger } from 'ts-log';
 import { Clock, ClockGranularity } from './clock';
 
 export class PomodoroSettings {
-    workTimeSeconds: number = 2
-    shortBreakTimeSeconds: number = 2
-    longBreakTimeSeconds: number = 5
+    workTimeSeconds: number = 5
+    shortBreakTimeSeconds: number = 5
+    longBreakTimeSeconds: number = 10
     numberOfSessionsBeforeBreak: number = 2
 
     static getSettings(): PomodoroSettings {
@@ -131,6 +131,38 @@ export class Pomodoro {
         return remainingTimeMs
     }
 
+    public getTargetSessionTimeForCurrentState(): number {
+        const getTargetTimeForWorkOrRest = (state: PomodoroState) => {
+            switch (this.getState()) {
+                case PomodoroState.Working:
+                    return this.getSettings().workTimeSeconds * 1000
+                case PomodoroState.Resting:
+                    return (this.isInLongBreak() ? this.getSettings().longBreakTimeSeconds : this.getSettings().shortBreakTimeSeconds) * 1000;
+                default:
+                    this.logger.warn(`Unexpected State ${state}`)
+            }
+            return -1
+        }
+
+        switch (this.getState()) {
+            case PomodoroState.Paused:
+                return getTargetTimeForWorkOrRest(this.getPreviousState())
+            case PomodoroState.Idle:
+                return getTargetTimeForWorkOrRest(PomodoroState.Working)
+            case PomodoroState.Working:
+            case PomodoroState.Resting:
+                return getTargetTimeForWorkOrRest(this.getState())
+            default:
+                this.logger.warn(`Unexpected State ${this.getState()}`)
+        }
+
+        return -1
+    }
+
+    public isInLongBreak(): boolean {
+        return this.getState() === PomodoroState.Resting && this.getRemainingWorkSessionsToLongBreak() === 0
+    }
+
     public registerOnEnterStateCallback(callback: PomodoroStateEvent) {
         this.onEnterState = callback
     }
@@ -219,7 +251,7 @@ export class Pomodoro {
     private onEnterState_Resting() {
         let breakTimeMs = this.remainingRestingTimeMs
         if (breakTimeMs < 0) {
-            breakTimeMs = this.finishedSessions % this.settings.numberOfSessionsBeforeBreak === 0
+            breakTimeMs = this.isInLongBreak()
                 ? this.settings.longBreakTimeSeconds
                 : this.settings.shortBreakTimeSeconds
             breakTimeMs *= 1000
