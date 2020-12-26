@@ -1,4 +1,4 @@
-import { Pomodoro, PomodoroState, PomodoroStateEvent } from '../components/pomodoro';
+import { Pomodoro, PomodoroState, PomodoroStateEvent, PomodoroEventListener } from '../components/pomodoro';
 import { Logger } from 'ts-log';
 import { ViewElements } from './elements';
 import { ClockFormatter, ClockFormatterSettings } from './clockFormatter';
@@ -24,7 +24,7 @@ class ControlIcons {
     static PlayButton: ButtonIcon = new ButtonIcon(ControlIcons.play, ControlIcons.playPressed)
 }
 
-export class PomodoroView {
+export class PomodoroView implements PomodoroEventListener {
     logger: Logger
     pomodoro: Pomodoro
     clockFormatter: ClockFormatter
@@ -36,47 +36,47 @@ export class PomodoroView {
         this.clockFormatter = new ClockFormatter(ClockFormatterSettings.getSettings())
         this.hapitcs = new Hapitcs()
 
-        this.pomodoro.registerOnEnterStateCallback(this.onEnterStateCallback.bind(this))
-        this.pomodoro.registerOnUpdateStateCallback(this.onUpdateStateCallback.bind(this))
+        this.pomodoro.registerListener(this)
 
         ViewElements.btnToggle.addEventListener('activate', this.onToggleButtonPressed.bind(this))
         ViewElements.btnSkip.addEventListener('activate', this.onSkipButtonPressed.bind(this))
         ViewElements.btnReset.addEventListener('activate', this.onResetButtonPressed.bind(this))
 
-        this.onEnterStateCallback(this.pomodoro.getState())
+        this.updateElements(this.pomodoro.getState())
     }
 
     //Callbacks
-    private onEnterStateCallback(state: PomodoroState) {
-        const color = this.getColorForState(state)
-        ViewElements.txtPomodoroSessionsCounter.style.fill = color
-        ViewElements.txtPomodoroTime.style.fill = color
-        ViewElements.arcPomodoroProgress.style.fill = color
-
-        if (state === PomodoroState.Paused) {
-            const previousStateColor = this.getColorForState(this.pomodoro.getPreviousState())
-            ViewElements.txtPomodoroSessionsCounter.style.fill = previousStateColor
-            ViewElements.txtPomodoroTime.style.fill = previousStateColor
-        }
-
-        const playPauseIcon = this.getToggleButtonIconForState(state)
-        ViewElements.btnToggle_ActiveIcon['image' as any] = playPauseIcon.icon
-        ViewElements.btnToggle_PressedIcon['image' as any] = playPauseIcon.iconPressed
-
-        const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
-        const remainingSessionsToLongBreak = this.pomodoro.getRemainingWorkSessionsToLongBreak()
-
-        ViewElements.txtPomodoroSessionsCounter.text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
-
-        this.onUpdateStateCallback(state)
-
-        const workAndRestStates = [PomodoroState.Working, PomodoroState.Resting]
-        if (workAndRestStates.indexOf(state) >= 0 && workAndRestStates.indexOf(this.pomodoro.getPreviousState()) >= 0) {
+    onStartWorking() {
+        if (this.pomodoro.getPreviousState() == PomodoroState.Resting) {
             this.hapitcs.playVibration(VibrationPattern.Alert, 2)
         }
+        this.updateElements(this.pomodoro.getState())
     }
 
-    private onUpdateStateCallback(state: PomodoroState) {
+    onStartResting() {
+        if (this.pomodoro.getPreviousState() == PomodoroState.Working) {
+            this.hapitcs.playVibration(VibrationPattern.Alert, 2)
+        }
+        this.updateElements(this.pomodoro.getState())
+    }
+
+    onPaused() {
+        this.updateElements(this.pomodoro.getState())
+
+        const previousStateColor = this.getColorForState(this.pomodoro.getPreviousState())
+        ViewElements.txtPomodoroSessionsCounter.style.fill = previousStateColor
+        ViewElements.txtPomodoroTime.style.fill = previousStateColor
+    }
+
+    onResumed() {
+        this.updateElements(this.pomodoro.getState())
+    }
+
+    onIdle() {
+        this.updateElements(this.pomodoro.getState())
+    }
+
+    onPomodoroUpdate() {
         const remainingTimeMs = this.pomodoro.getRemainingTimeMs()
         this.clockFormatter.setMilliSeconds(remainingTimeMs)
         ViewElements.txtPomodoroTime.text = this.clockFormatter.toString()
@@ -85,7 +85,9 @@ export class PomodoroView {
 
         ViewElements.arcPomodoroProgress.sweepAngle = Math.ceil(((targetTime - remainingTimeMs) / targetTime) * 360)
     }
+    //End callbacks
 
+    //Control callbacks
     private onToggleButtonPressed(event: MouseEvent) {
         if (this.pomodoro.isRunning()) {
             this.pomodoro.pause()
@@ -103,7 +105,30 @@ export class PomodoroView {
     private onResetButtonPressed(event: MouseEvent) {
         this.pomodoro.stop()
     }
-    //End callbacks
+    //End Control callbacks
+
+    private updateElements(state: PomodoroState) {
+        const color = this.getColorForState(state)
+        ViewElements.txtPomodoroSessionsCounter.style.fill = color
+        ViewElements.txtPomodoroTime.style.fill = color
+        ViewElements.arcPomodoroProgress.style.fill = color
+
+        const playPauseIcon = this.getToggleButtonIconForState(state)
+        ViewElements.btnToggle_ActiveIcon['image' as any] = playPauseIcon.icon
+        ViewElements.btnToggle_PressedIcon['image' as any] = playPauseIcon.iconPressed
+
+        const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
+        const remainingSessionsToLongBreak = this.pomodoro.getRemainingWorkSessionsToLongBreak()
+
+        ViewElements.txtPomodoroSessionsCounter.text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
+
+        this.onPomodoroUpdate()
+
+        const workAndRestStates = [PomodoroState.Working, PomodoroState.Resting]
+        if (workAndRestStates.indexOf(state) >= 0 && workAndRestStates.indexOf(this.pomodoro.getPreviousState()) >= 0) {
+            this.hapitcs.playVibration(VibrationPattern.Alert, 2)
+        }
+    }
 
     private getColorForState(state: PomodoroState): string {
         switch (state) {

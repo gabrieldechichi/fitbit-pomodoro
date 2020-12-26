@@ -19,6 +19,15 @@ export enum PomodoroState {
     Paused = "paused"
 }
 
+export interface PomodoroEventListener {
+    onStartWorking: () => void
+    onStartResting: () => void
+    onPaused: () => void
+    onResumed: () => void
+    onIdle: () => void
+    onPomodoroUpdate: () => void
+}
+
 export type PomodoroStateEvent = (state: PomodoroState) => void
 
 export class Pomodoro {
@@ -26,10 +35,7 @@ export class Pomodoro {
     private clock: Clock
     private settings: PomodoroSettings
 
-    //events
-    private onEnterState: PomodoroStateEvent
-    private onUpdateState: PomodoroStateEvent
-    //
+    private listener: PomodoroEventListener
 
     //state variables
     private state: PomodoroState
@@ -165,12 +171,8 @@ export class Pomodoro {
         return this.getState() === PomodoroState.Resting && this.getRemainingWorkSessionsToLongBreak() === 0
     }
 
-    public registerOnEnterStateCallback(callback: PomodoroStateEvent) {
-        this.onEnterState = callback
-    }
-
-    public registerOnUpdateStateCallback(callback: PomodoroStateEvent) {
-        this.onUpdateState = callback
+    public registerListener(listener: PomodoroEventListener) {
+        this.listener = listener
     }
     //end public interface
 
@@ -179,7 +181,6 @@ export class Pomodoro {
             this.previousState = this.state
             this.state = newState
             processEnterState()
-            this.onEnterState(this.state)
         }
 
         switch (newState) {
@@ -226,7 +227,7 @@ export class Pomodoro {
                 this.logger.warn(`Unexpected state: ${this.state}`)
         }
 
-        this.onUpdateState(this.state)
+        this.listener.onPomodoroUpdate()
     }
 
     ///////
@@ -234,6 +235,7 @@ export class Pomodoro {
         const workTimeMs = this.remainingWorkingTimeMs < 0 ? this.settings.workTimeSeconds * 1000 : this.remainingWorkingTimeMs
         this.endWorkingTimeMs = Date.now() + workTimeMs
         this.remainingWorkingTimeMs = -1
+        this.listener.onStartWorking()
     }
 
     private onStateUpdate_Working() {
@@ -258,6 +260,8 @@ export class Pomodoro {
 
         this.endRestingTimeMs = Date.now() + breakTimeMs
         this.remainingRestingTimeMs = -1
+
+        this.listener.onStartResting()
     }
 
     private onStateUpdate_Resting() {
@@ -277,6 +281,8 @@ export class Pomodoro {
         this.remainingWorkingTimeMs = -1
         this.endWorkingTimeMs = 0
         this.endRestingTimeMs = 0
+
+        this.listener.onIdle()
     }
 
     private onStateUpdate_Idle() {
@@ -290,6 +296,8 @@ export class Pomodoro {
         const now = Date.now()
         this.remainingWorkingTimeMs = this.endWorkingTimeMs - now
         this.remainingRestingTimeMs = this.endRestingTimeMs - now
+
+        this.listener.onPaused()
     }
 
     private onStateUpdate_Paused() {
