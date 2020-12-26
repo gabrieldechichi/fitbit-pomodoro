@@ -1,7 +1,7 @@
 import { Logger } from 'ts-log';
 import { Pomodoro, PomodoroSettings } from './pomoevents/components/pomodoro';
 import { LoggerFactory } from './pomoevents/components/logger';
-import { ViewController } from './pomoevents/view/ViewController';
+import { ViewController } from './pomoevents/view/viewController';
 
 class App {
     logger: Logger

@@ -1,7 +1,7 @@
 import { Pomodoro, PomodoroState, PomodoroStateEvent } from '../components/pomodoro';
 import { Logger } from 'ts-log';
-import { ViewElements } from './Elements';
-import { ClockFormatter, ClockFormatterSettings } from './ClockFormatter';
+import { ViewElements } from './elements';
+import { ClockFormatter, ClockFormatterSettings } from './clockFormatter';
 
 class ButtonIcon {
     icon: string

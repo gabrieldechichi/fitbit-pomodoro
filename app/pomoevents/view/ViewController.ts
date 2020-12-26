@@ -1,7 +1,7 @@
-import { ViewElements } from './Elements';
+import { ViewElements } from './elements';
 import { Logger } from 'ts-log';
 import { Pomodoro } from '../components/pomodoro';
-import { PomodoroView } from './PomodoroView';
+import { PomodoroView } from './pomodoroView';
 
 export class ViewController {
     logger: Logger
