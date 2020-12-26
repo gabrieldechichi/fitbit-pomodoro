@@ -25,10 +25,11 @@ class ControlIcons {
 }
 
 export class PomodoroView implements PomodoroEventListener {
-    logger: Logger
-    pomodoro: Pomodoro
-    clockFormatter: ClockFormatter
-    hapitcs: Hapitcs
+    private logger: Logger
+    private pomodoro: Pomodoro
+    private clockFormatter: ClockFormatter
+    private hapitcs: Hapitcs
+    private isSkipping: boolean = false
 
     constructor(logger: Logger, pomodoro: Pomodoro) {
         this.logger = logger
@@ -45,19 +46,24 @@ export class PomodoroView implements PomodoroEventListener {
         this.updateElements(this.pomodoro.getState())
     }
 
+    private playVibration(pattern: VibrationPattern, count: number) {
+        const isTransitioningFromWorkOrRest = [PomodoroState.Working, PomodoroState.Resting].indexOf(this.pomodoro.getPreviousState()) >= 0
+        if (isTransitioningFromWorkOrRest && !this.isSkipping) {
+            this.hapitcs.playVibration(pattern, count)
+        }
+    }
+
     //Callbacks
     onStartWorking() {
-        if (this.pomodoro.getPreviousState() == PomodoroState.Resting) {
-            this.hapitcs.playVibration(VibrationPattern.Alert, 2)
-        }
+        this.playVibration(VibrationPattern.Alert, 2)
         this.updateElements(this.pomodoro.getState())
+        this.setIsSkipping(false)
     }
 
     onStartResting() {
-        if (this.pomodoro.getPreviousState() == PomodoroState.Working) {
-            this.hapitcs.playVibration(VibrationPattern.Alert, 2)
-        }
+        this.playVibration(VibrationPattern.Alert, 2)
         this.updateElements(this.pomodoro.getState())
+        this.setIsSkipping(false)
     }
 
     onPaused() {
@@ -77,6 +83,7 @@ export class PomodoroView implements PomodoroEventListener {
     }
 
     onPomodoroUpdate() {
+        //Update arc
         const remainingTimeMs = this.pomodoro.getRemainingTimeMs()
         this.clockFormatter.setMilliSeconds(remainingTimeMs)
         ViewElements.txtPomodoroTime.text = this.clockFormatter.toString()
@@ -99,6 +106,7 @@ export class PomodoroView implements PomodoroEventListener {
     }
 
     private onSkipButtonPressed(event: MouseEvent) {
+        this.setIsSkipping(true)
         this.pomodoro.skip()
     }
 
@@ -108,26 +116,23 @@ export class PomodoroView implements PomodoroEventListener {
     //End Control callbacks
 
     private updateElements(state: PomodoroState) {
+        //Update colors
         const color = this.getColorForState(state)
         ViewElements.txtPomodoroSessionsCounter.style.fill = color
         ViewElements.txtPomodoroTime.style.fill = color
         ViewElements.arcPomodoroProgress.style.fill = color
 
+        //Update button icons
         const playPauseIcon = this.getToggleButtonIconForState(state)
         ViewElements.btnToggle_ActiveIcon['image' as any] = playPauseIcon.icon
         ViewElements.btnToggle_PressedIcon['image' as any] = playPauseIcon.iconPressed
 
+        //Update sessions count
         const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
-        const remainingSessionsToLongBreak = this.pomodoro.getRemainingWorkSessionsToLongBreak()
-
+        const remainingSessionsToLongBreak = this.pomodoro.getWorkSessionNumber()
         ViewElements.txtPomodoroSessionsCounter.text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
 
         this.onPomodoroUpdate()
-
-        const workAndRestStates = [PomodoroState.Working, PomodoroState.Resting]
-        if (workAndRestStates.indexOf(state) >= 0 && workAndRestStates.indexOf(this.pomodoro.getPreviousState()) >= 0) {
-            this.hapitcs.playVibration(VibrationPattern.Alert, 2)
-        }
     }
 
     private getColorForState(state: PomodoroState): string {
@@ -157,5 +162,9 @@ export class PomodoroView implements PomodoroEventListener {
                 this.logger.warn(`Unexpected Pomodoro State ${state}`)
         }
         return new ButtonIcon("", "")
+    }
+
+    private setIsSkipping(newValue: boolean) {
+        this.isSkipping = newValue
     }
 }

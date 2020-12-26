@@ -47,7 +47,7 @@ export class Pomodoro {
     private remainingWorkingTimeMs: number = -1
     private remainingRestingTimeMs: number = -1
 
-    private finishedSessions: number = 0
+    private workSessionNumber: number = 0
     //end state variables
 
     constructor(settings: PomodoroSettings, logger: Logger) {
@@ -98,6 +98,10 @@ export class Pomodoro {
         return this.state === PomodoroState.Paused
     }
 
+    public wasPaused(): boolean {
+        return this.previousState === PomodoroState.Paused
+    }
+
     public getState(): PomodoroState {
         return this.state
     }
@@ -110,8 +114,18 @@ export class Pomodoro {
         return this.settings
     }
 
-    public getRemainingWorkSessionsToLongBreak(): number {
-        return this.finishedSessions % this.settings.numberOfSessionsBeforeBreak
+    public getWorkSessionNumber(): number {
+        if (this.workSessionNumber === 0) {
+            return 0
+        }
+
+        const wrappedWorkSessionNumber = this.workSessionNumber % this.settings.numberOfSessionsBeforeBreak
+
+        if (wrappedWorkSessionNumber === 0 && this.getState() === PomodoroState.Working) {
+            return this.settings.numberOfSessionsBeforeBreak
+        }
+
+        return wrappedWorkSessionNumber
     }
 
     public getRemainingTimeMs(): number {
@@ -168,7 +182,7 @@ export class Pomodoro {
     }
 
     public isInLongBreak(): boolean {
-        return this.getState() === PomodoroState.Resting && this.getRemainingWorkSessionsToLongBreak() === 0
+        return this.getState() === PomodoroState.Resting && this.getWorkSessionNumber() === 0
     }
 
     public registerListener(listener: PomodoroEventListener) {
@@ -235,14 +249,19 @@ export class Pomodoro {
         const workTimeMs = this.remainingWorkingTimeMs < 0 ? this.settings.workTimeSeconds * 1000 : this.remainingWorkingTimeMs
         this.endWorkingTimeMs = Date.now() + workTimeMs
         this.remainingWorkingTimeMs = -1
-        this.listener.onStartWorking()
+
+        if (this.wasPaused()) {
+            this.listener.onResumed()
+        } else {
+            ++this.workSessionNumber
+            this.listener.onStartWorking()
+        }
     }
 
     private onStateUpdate_Working() {
         this.logger.debug(`Remaining work time ${(this.endWorkingTimeMs - Date.now()) / 1000}`)
         const now = Date.now()
         if (now >= this.endWorkingTimeMs) {
-            ++this.finishedSessions
             this.changeState(PomodoroState.Resting)
         }
     }
@@ -261,7 +280,11 @@ export class Pomodoro {
         this.endRestingTimeMs = Date.now() + breakTimeMs
         this.remainingRestingTimeMs = -1
 
-        this.listener.onStartResting()
+        if (this.wasPaused()) {
+            this.listener.onResumed()
+        } else {
+            this.listener.onStartResting()
+        }
     }
 
     private onStateUpdate_Resting() {
@@ -276,7 +299,7 @@ export class Pomodoro {
     /////
     private onEnterState_Idle() {
         this.logger.debug("Entering Idle state!")
-        this.finishedSessions = 0
+        this.workSessionNumber = 0
         this.remainingRestingTimeMs = -1
         this.remainingWorkingTimeMs = -1
         this.endWorkingTimeMs = 0
