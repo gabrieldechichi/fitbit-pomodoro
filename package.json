@@ -25,5 +25,8 @@
   "scripts": {
     "build": "fitbit-build",
     "debug": "fitbit"
+  },
+  "dependencies": {
+    "ts-log": "^2.2.3"
   }
 }

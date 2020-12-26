@@ -1,3 +1,4 @@
+import { Logger } from 'ts-log';
 import { Clock, ClockGranularity } from './clock';
 
 export class PomodoroSettings {
@@ -18,6 +19,7 @@ enum PomodoroState {
 }
 
 export class Pomodoro {
+    private logger: Logger
     private clock: Clock
     private settings: PomodoroSettings
     private state: PomodoroState
@@ -26,7 +28,8 @@ export class Pomodoro {
     private endRestingTimeMs: number = 0
     private finishedSessions: number = 0
 
-    constructor(settings: PomodoroSettings) {
+    constructor(settings: PomodoroSettings, logger: Logger) {
+        this.logger = logger
         this.settings = settings
         this.state = PomodoroState.Idle
         this.clock = new Clock(ClockGranularity.Seconds, this.onClockUpdate.bind(this))
@@ -65,7 +68,7 @@ export class Pomodoro {
                 }
                 break
             default:
-                console.log("Unexpected state: " + newState)
+                this.logger.warn(`Unexpected state:  ${newState}`)
         }
     }
 
@@ -75,7 +78,7 @@ export class Pomodoro {
     }
 
     private onStateUpdate_Working() {
-        console.log("Remaining work time " + (this.endWorkingTimeMs - Date.now()) / 1000)
+        this.logger.debug(`Remaining work time ${(this.endWorkingTimeMs - Date.now()) / 1000}`)
         const now = Date.now()
         if (now >= this.endWorkingTimeMs) {
             ++this.finishedSessions
@@ -86,7 +89,6 @@ export class Pomodoro {
 
     /////
     private onEnterState_Resting() {
-        console.log("-->" + this.finishedSessions + ", " + this.settings.numberOfSessionsBeforeBreak + ", " + this.finishedSessions % this.settings.numberOfSessionsBeforeBreak)
         const breakTimeSeconds = this.finishedSessions % this.settings.numberOfSessionsBeforeBreak === 0
             ? this.settings.longBreakTimeSeconds
             : this.settings.shortBreakTimeSeconds
@@ -95,7 +97,7 @@ export class Pomodoro {
     }
 
     private onStateUpdate_Resting() {
-        console.log("Remaining REST time " + (this.endRestingTimeMs - Date.now()) / 1000)
+        this.logger.debug(`Remaining REST time ${(this.endRestingTimeMs - Date.now()) / 1000}`)
         const now = Date.now()
         if (now >= this.endRestingTimeMs) {
             this.changeState(PomodoroState.Working)
@@ -104,11 +106,11 @@ export class Pomodoro {
     /////
 
     private onEnterState_Idle() {
-        console.log("Entering Idle state!")
+        this.logger.debug("Entering Idle state!")
     }
 
     private onStateUpdate_Idle() {
-        console.log("Idle state update!")
+        this.logger.debug("Idle state update!")
     }
 
     private onClockUpdate(date: Date) {
@@ -123,7 +125,7 @@ export class Pomodoro {
                 this.onStateUpdate_Idle()
                 break
             default:
-                console.log("Unexpected state: " + this.state)
+                this.logger.warn(`Unexpected state: ${this.state}`)
         }
     }
 }
