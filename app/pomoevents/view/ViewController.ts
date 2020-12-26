@@ -24,7 +24,7 @@ export class ViewController {
     }
 
     onSkipButtonPressed(event: MouseEvent) {
-
+        this.pomodoro.skip()
     }
 
     onResetButtonPressed(event: MouseEvent) {

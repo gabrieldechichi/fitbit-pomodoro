@@ -65,6 +65,14 @@ export class Pomodoro {
         }
     }
 
+    public skip() {
+        if (this.state === PomodoroState.Working) {
+            this.changeState(PomodoroState.Resting)
+        } else if (this.state === PomodoroState.Resting) {
+            this.changeState(PomodoroState.Working)
+        }
+    }
+
     public isRunning(): boolean {
         return this.state === PomodoroState.Working || this.state === PomodoroState.Resting
     }
