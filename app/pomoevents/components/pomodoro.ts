@@ -15,7 +15,8 @@ export class PomodoroSettings {
 enum PomodoroState {
     Idle = "Idle",
     Working = "running",
-    Resting = "resting"
+    Resting = "resting",
+    Paused = "paused"
 }
 
 export class Pomodoro {
@@ -23,15 +24,20 @@ export class Pomodoro {
     private clock: Clock
     private settings: PomodoroSettings
     private state: PomodoroState
+    private previousState: PomodoroState
 
     private endWorkingTimeMs: number = 0
     private endRestingTimeMs: number = 0
+
+    private remainingWorkingTimeMs: number = -1
+    private remainingRestingTimeMs: number = -1
+
     private finishedSessions: number = 0
 
     constructor(settings: PomodoroSettings, logger: Logger) {
         this.logger = logger
         this.settings = settings
-        this.state = PomodoroState.Idle
+        this.state = this.previousState = PomodoroState.Idle
         this.clock = new Clock(ClockGranularity.Seconds, this.onClockUpdate.bind(this))
     }
 
@@ -47,28 +53,55 @@ export class Pomodoro {
         }
     }
 
+    public pause() {
+        if (this.isRunning() && this.state !== PomodoroState.Paused) {
+            this.changeState(PomodoroState.Paused)
+        }
+    }
+
+    public resume() {
+        if (this.state === PomodoroState.Paused) {
+            this.changeState(this.previousState)
+        }
+    }
+
     public isRunning(): boolean {
         return this.state === PomodoroState.Working || this.state === PomodoroState.Resting
     }
 
+    public isPaused(): boolean {
+        return this.state === PomodoroState.Paused
+    }
+
     private changeState(newState: PomodoroState) {
+        const setNewState = () => {
+            this.previousState = this.state
+            this.state = newState
+        }
+
         switch (newState) {
             case PomodoroState.Working:
                 if (this.state !== PomodoroState.Working) {
-                    this.state = PomodoroState.Working
+                    setNewState()
                     this.onEnterState_Working()
                 }
                 break
             case PomodoroState.Idle:
                 if (this.state !== PomodoroState.Idle) {
-                    this.state = PomodoroState.Idle
+                    setNewState()
                     this.onEnterState_Idle()
                 }
                 break
             case PomodoroState.Resting:
                 if (this.state !== PomodoroState.Resting) {
-                    this.state = PomodoroState.Resting
+                    setNewState()
                     this.onEnterState_Resting()
+                }
+                break
+            case PomodoroState.Paused:
+                if (this.state !== PomodoroState.Paused) {
+                    setNewState()
+                    this.onEnterState_Paused()
                 }
                 break
             default:
@@ -76,9 +109,30 @@ export class Pomodoro {
         }
     }
 
+    private onClockUpdate(date: Date) {
+        switch (this.state) {
+            case PomodoroState.Working:
+                this.onStateUpdate_Working()
+                break
+            case PomodoroState.Resting:
+                this.onStateUpdate_Resting()
+                break
+            case PomodoroState.Paused:
+                this.onStateUpdate_Paused()
+                break
+            case PomodoroState.Idle:
+                this.onStateUpdate_Idle()
+                break
+            default:
+                this.logger.warn(`Unexpected state: ${this.state}`)
+        }
+    }
+
     ///////
     private onEnterState_Working() {
-        this.endWorkingTimeMs = Date.now() + this.settings.workTimeSeconds * 1000
+        const workTimeMs = this.remainingWorkingTimeMs < 0 ? this.settings.workTimeSeconds * 1000 : this.remainingWorkingTimeMs
+        this.endWorkingTimeMs = Date.now() + workTimeMs
+        this.remainingWorkingTimeMs = -1
     }
 
     private onStateUpdate_Working() {
@@ -93,11 +147,16 @@ export class Pomodoro {
 
     /////
     private onEnterState_Resting() {
-        const breakTimeSeconds = this.finishedSessions % this.settings.numberOfSessionsBeforeBreak === 0
-            ? this.settings.longBreakTimeSeconds
-            : this.settings.shortBreakTimeSeconds
+        let breakTimeMs = this.remainingRestingTimeMs
+        if (breakTimeMs < 0) {
+            breakTimeMs = this.finishedSessions % this.settings.numberOfSessionsBeforeBreak === 0
+                ? this.settings.longBreakTimeSeconds
+                : this.settings.shortBreakTimeSeconds
+            breakTimeMs *= 1000
+        }
 
-        this.endRestingTimeMs = Date.now() + breakTimeSeconds * 1000
+        this.endRestingTimeMs = Date.now() + breakTimeMs
+        this.remainingRestingTimeMs = -1
     }
 
     private onStateUpdate_Resting() {
@@ -109,27 +168,31 @@ export class Pomodoro {
     }
     /////
 
+    /////
     private onEnterState_Idle() {
         this.logger.debug("Entering Idle state!")
+        this.finishedSessions = 0
+        this.remainingRestingTimeMs = -1
+        this.remainingWorkingTimeMs = -1
+        this.endWorkingTimeMs = 0
+        this.endRestingTimeMs = 0
     }
 
     private onStateUpdate_Idle() {
         this.logger.debug("Idle state update!")
     }
+    /////
 
-    private onClockUpdate(date: Date) {
-        switch (this.state) {
-            case PomodoroState.Working:
-                this.onStateUpdate_Working()
-                break
-            case PomodoroState.Resting:
-                this.onStateUpdate_Resting()
-                break
-            case PomodoroState.Idle:
-                this.onStateUpdate_Idle()
-                break
-            default:
-                this.logger.warn(`Unexpected state: ${this.state}`)
-        }
+    /////
+    private onEnterState_Paused() {
+        this.logger.debug("Entering Paused state")
+        const now = Date.now()
+        this.remainingWorkingTimeMs = this.endWorkingTimeMs - now
+        this.remainingRestingTimeMs = this.endRestingTimeMs - now
     }
+
+    private onStateUpdate_Paused() {
+        this.logger.debug("Paused state update")
+    }
+    /////
 }
