@@ -1,5 +1,6 @@
 import document from 'document'
 import { Logger } from 'ts-log';
+import { Dictionary } from '../coretypes/dictionary';
 
 export enum HardwareKeyType {
     Down = 'down',
@@ -25,6 +26,12 @@ export type KeyPressedEvent = () => EventCalbackResponse
 export class AppInput {
     private logger: Logger
 
+    private hardwareKeyPressedEvents: Dictionary<HardwareKeyType, KeyPressedEvent> = {
+        [HardwareKeyType.Back]: null,
+        [HardwareKeyType.Up]: null,
+        [HardwareKeyType.Down]: null
+    }
+
     private onBackPressed: KeyPressedEvent
     private onDownPressed: KeyPressedEvent
     private onUpPressed: KeyPressedEvent
@@ -34,37 +41,11 @@ export class AppInput {
     }
 
     public registerHardwareKeyPressedCallback(key: HardwareKeyType, callback: KeyPressedEvent) {
-        switch (key) {
-            case HardwareKeyType.Down:
-                this.onDownPressed = callback
-                break
-            case HardwareKeyType.Up:
-                this.onUpPressed = callback
-                break
-            case HardwareKeyType.Back:
-                this.onBackPressed = callback
-                break
-            default:
-                this.logger.warn(`Unexpected key event: ${key}`)
-        }
+        this.hardwareKeyPressedEvents[key] = callback
     }
 
     private onKeyPress(evt: KeyboardEvent) {
-        let callback: KeyPressedEvent = null
-
-        switch (evt.key) {
-            case HardwareKeyType.Down:
-                callback = this.onDownPressed
-                break
-            case HardwareKeyType.Up:
-                callback = this.onUpPressed
-                break
-            case HardwareKeyType.Back:
-                callback = this.onBackPressed
-                break
-            default:
-                this.logger.warn(`Unexpected key event: ${evt.key}`)
-        }
+        let callback: KeyPressedEvent = this.hardwareKeyPressedEvents[evt.key]
 
         if (!callback) {
             return

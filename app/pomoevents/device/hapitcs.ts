@@ -1,4 +1,5 @@
 import { vibration, VibrationPatternName } from "haptics";
+import { Dictionary } from "../coretypes/dictionary";
 
 export enum VibrationPattern {
     Alert = 'alert',
@@ -25,11 +26,7 @@ class VibrationConfig {
     }
 }
 
-type EnumDictionary<T extends string | symbol | number, U> = {
-    [K in T]: U;
-};
-
-const vibrationConfigs: EnumDictionary<VibrationPattern, VibrationConfig> = {
+const vibrationConfigs: Dictionary<VibrationPattern, VibrationConfig> = {
     [VibrationPattern.Alert]: new VibrationConfig(VibrationPattern.Alert, 3),
     [VibrationPattern.Bump]: new VibrationConfig(VibrationPattern.Bump, 3),
     [VibrationPattern.Confirmation]: new VibrationConfig(VibrationPattern.Confirmation, 3),
