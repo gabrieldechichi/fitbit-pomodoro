@@ -127,8 +127,8 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
 
         //Update button icons
         const playPauseIcon = this.getToggleButtonIconForState(state)
-        ViewElements.btnToggle_ActiveIcon['image' as any] = playPauseIcon.icon
-        ViewElements.btnToggle_PressedIcon['image' as any] = playPauseIcon.iconPressed
+        ViewElements.btnToggle_ActiveIcon.setImage(playPauseIcon.icon)
+        ViewElements.btnToggle_PressedIcon.setImage(playPauseIcon.iconPressed)
 
         //Update sessions count
         const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
