@@ -1,0 +1,33 @@
+<svg id="pomodoro-view">
+  <section>
+    <arc x="50%-110" y="50%-110" width="220" height="220" fill="fb-extra-dark-gray" arc-width="10" start-angle="0" sweep-angle="360"/>
+    <arc id="countdown-arc" x="50%-110" y="50%-110" width="220" height="220" fill="fb-red" arc-width="10" start-angle="0" sweep-angle="-140"/>
+
+    <text id="countdown-counter" font-family="System-Bold" font-size="60" text-anchor="middle" x="50%" y="50%+15" fill="white">
+      24:59
+    </text>
+
+    <text id="interval-counter" font-family="System-Bold" font-size="32" text-anchor="middle" x="50%" y="50%+55" fill="white">
+      11/12
+    </text>
+  </section>
+
+  <!-- Buttons -->
+  <svg>
+    <!-- TOP LEFT -->
+    <use id="btn-x" href="#combo-button-upper-left" fill="fb-white">
+      <set href="combo-button-icon" attributeName="href" to="icons/x.png"/>
+      <set href="combo-button-icon-press" attributeName="href" to="icons/x_press.png"/>
+    </use>
+    <!-- TOP RIGHT -->
+    <use id="btn-skip" href="#combo-button-upper-right" fill="fb-white">
+      <set href="combo-button-icon" attributeName="href" to="icons/skip.png"/>
+      <set href="combo-button-icon-press" attributeName="href" to="icons/skip_press.png"/>
+    </use>
+    <!-- BOTTOM RIGHT -->
+    <use id="btn-toggle" href="#combo-button-lower-right" fill="fb-white">
+      <set href="combo-button-icon" attributeName="href" to="icons/play.png"/>
+      <set href="combo-button-icon-press" attributeName="href" to="icons/play_press.png"/>
+    </use>
+  </svg>
+</svg>

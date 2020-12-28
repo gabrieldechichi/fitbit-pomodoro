@@ -3,6 +3,7 @@ import { Logger } from 'ts-log';
 import { ViewElements } from './elements';
 import { ClockFormatter, ClockFormatterSettings } from './clockFormatter';
 import { Hapitcs, VibrationPattern } from '../device/hapitcs';
+import { PanoramaView } from '../../fitbit-modules/panorama/panorama-view';
 
 class ButtonIcon {
     icon: string
@@ -24,14 +25,15 @@ class ControlIcons {
     static PlayButton: ButtonIcon = new ButtonIcon(ControlIcons.play, ControlIcons.playPressed)
 }
 
-export class PomodoroView implements PomodoroEventListener {
+export class PomodoroView extends PanoramaView implements PomodoroEventListener {
     private logger: Logger
     private pomodoro: Pomodoro
     private clockFormatter: ClockFormatter
     private hapitcs: Hapitcs
     private isSkipping: boolean = false
 
-    constructor(logger: Logger, pomodoro: Pomodoro) {
+    constructor(logger: Logger, pomodoro: Pomodoro, panoramaItem: Element) {
+        super(panoramaItem)
         this.logger = logger
         this.pomodoro = pomodoro
         this.clockFormatter = new ClockFormatter(ClockFormatterSettings.getSettings())

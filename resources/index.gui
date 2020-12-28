@@ -1,33 +1,35 @@
-<svg>
-  <section>
-    <arc x="50%-110" y="50%-110" width="220" height="220" fill="fb-extra-dark-gray" arc-width="10" start-angle="0" sweep-angle="360"/>
-    <arc id="countdown-arc" x="50%-110" y="50%-110" width="220" height="220" fill="fb-red" arc-width="10" start-angle="0" sweep-angle="-140"/>
+<svg id="root">
+  <link rel='import' href='/mnt/sysassets/widgets/baseview_widget.gui' />
+  <link rel='import' href='/mnt/sysassets/widgets/panoramaview_widget.gui' />
+  <link rel='import' href='/mnt/sysassets/widgets/pagination_dots.gui' />
 
-    <text id="countdown-counter" font-family="System-Bold" font-size="60" text-anchor="middle" x="50%" y="50%+15" fill="white">
-      24:59
-    </text>
+  <rect id="background"/>
 
-    <text id="interval-counter" font-family="System-Bold" font-size="32" text-anchor="middle" x="50%" y="50%+55" fill="white">
-      11/12
-    </text>
-  </section>
+  <!-- Panorama -->
+  <symbol id='my-panorama'>
+    <use id='container' href='#panoramaview' overflow='hidden'>
 
-  <!-- Buttons -->
+      <use id="close-item" href="#panoramaview-item">
+        <link rel="import" href="close.gui" />
+      </use>
+      <use id="pomodoro-item" href="#panoramaview-item">
+        <link rel="import" href="pomodoro.gui" />
+      </use>
+
+      <!-- Have enough dots for your slides (extras are hidden) -->
+      <use id='pagination-dots' class='pagination' href='#pagination-widget' y='95%'>
+        <use href='#pagination-dot' />
+        <use href='#pagination-dot' />
+        <use href='#pagination-dot' />
+        <use href='#pagination-dot' />
+        <use href='#pagination-dot' />
+        <use href='#pagination-highlight-dot' />
+      </use>
+
+    </use>
+  </symbol>
+
   <svg>
-    <!-- TOP LEFT -->
-    <use id="btn-x" href="#combo-button-upper-left" fill="fb-white">
-      <set href="combo-button-icon" attributeName="href" to="icons/x.png"/>
-      <set href="combo-button-icon-press" attributeName="href" to="icons/x_press.png"/>
-    </use>
-    <!-- TOP RIGHT -->
-    <use id="btn-skip" href="#combo-button-upper-right" fill="fb-white">
-      <set href="combo-button-icon" attributeName="href" to="icons/skip.png"/>
-      <set href="combo-button-icon-press" attributeName="href" to="icons/skip_press.png"/>
-    </use>
-    <!-- BOTTOM RIGHT -->
-    <use id="btn-toggle" href="#combo-button-lower-right" fill="fb-white">
-      <set href="combo-button-icon" attributeName="href" to="icons/play.png"/>
-      <set href="combo-button-icon-press" attributeName="href" to="icons/play_press.png"/>
-    </use>
+    <use id="mypano" href="#my-panorama" />
   </svg>
 </svg>
