@@ -41,6 +41,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
 
         this.pomodoro.registerListener(this)
 
+        ViewElements.txtPomodoroSessionsCounter.onanimationend
         ViewElements.btnToggle.addEventListener('activate', this.onToggleButtonPressed.bind(this))
         ViewElements.btnSkip.addEventListener('activate', this.onSkipButtonPressed.bind(this))
         ViewElements.btnReset.addEventListener('activate', this.onResetButtonPressed.bind(this))
@@ -72,8 +73,8 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         this.updateElements(this.pomodoro.getState())
 
         const previousStateColor = this.getColorForState(this.pomodoro.getPreviousState())
-        ViewElements.txtPomodoroSessionsCounter.style.fill = previousStateColor
-        ViewElements.txtPomodoroTime.style.fill = previousStateColor
+        ViewElements.txtPomodoroSessionsCounter.getElement().style.fill = previousStateColor
+        ViewElements.txtPomodoroTime.getElement().style.fill = previousStateColor
     }
 
     onResumed() {
@@ -88,11 +89,11 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         //Update arc
         const remainingTimeMs = this.pomodoro.getRemainingTimeMs()
         this.clockFormatter.setMilliSeconds(remainingTimeMs)
-        ViewElements.txtPomodoroTime.text = this.clockFormatter.toString()
+        ViewElements.txtPomodoroTime.getElement().text = this.clockFormatter.toString()
 
         const targetTime = this.pomodoro.getTargetSessionTimeForCurrentState()
 
-        ViewElements.arcPomodoroProgress.sweepAngle = Math.ceil(((targetTime - remainingTimeMs) / targetTime) * 360)
+        ViewElements.arcPomodoroProgress.getElement().sweepAngle = Math.ceil(((targetTime - remainingTimeMs) / targetTime) * 360)
     }
     //End callbacks
 
@@ -120,9 +121,9 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     private updateElements(state: PomodoroState) {
         //Update colors
         const color = this.getColorForState(state)
-        ViewElements.txtPomodoroSessionsCounter.style.fill = color
-        ViewElements.txtPomodoroTime.style.fill = color
-        ViewElements.arcPomodoroProgress.style.fill = color
+        ViewElements.txtPomodoroSessionsCounter.getElement().style.fill = color
+        ViewElements.txtPomodoroTime.getElement().style.fill = color
+        ViewElements.arcPomodoroProgress.getElement().style.fill = color
 
         //Update button icons
         const playPauseIcon = this.getToggleButtonIconForState(state)
@@ -132,7 +133,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         //Update sessions count
         const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
         const remainingSessionsToLongBreak = this.pomodoro.getWorkSessionNumber()
-        ViewElements.txtPomodoroSessionsCounter.text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
+        ViewElements.txtPomodoroSessionsCounter.getElement().text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
 
         this.onPomodoroUpdate()
     }
