@@ -83,8 +83,8 @@ export class ElementWrapper<ElementType extends Element = Element> implements Gl
     }
     // END Global events implementation
 
-    getElement(): ElementType {
-        return this.element
+    getElement<T extends ElementType>(): T {
+        return this.element as T
     }
 
     setImage(imagePath: string) {

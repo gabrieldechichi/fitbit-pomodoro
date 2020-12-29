@@ -74,6 +74,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
 
         const previousStateColor = this.getColorForState(this.pomodoro.getPreviousState())
         ViewElements.txtPomodoroSessionsCounter.getElement().style.fill = previousStateColor
+        ViewElements.txtPomodoroSessionsCounter.getElement().style.fill = previousStateColor
         ViewElements.txtPomodoroTime.getElement().style.fill = previousStateColor
     }
 
@@ -130,6 +131,8 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         ViewElements.btnToggle_ActiveIcon.setImage(playPauseIcon.icon)
         ViewElements.btnToggle_PressedIcon.setImage(playPauseIcon.iconPressed)
 
+        ViewElements.btnSkip.getElement<GraphicsElement>().style.display = this.getSkipButtonVisibility(state)
+
         //Update sessions count
         const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
         const remainingSessionsToLongBreak = this.pomodoro.getWorkSessionNumber()
@@ -165,6 +168,20 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
                 this.logger.warn(`Unexpected Pomodoro State ${state}`)
         }
         return new ButtonIcon("", "")
+    }
+
+    private getSkipButtonVisibility(state: PomodoroState): 'inline' | 'none' {
+        switch (state) {
+            case PomodoroState.Working:
+            case PomodoroState.Resting:
+                return 'inline'
+            case PomodoroState.Paused:
+            case PomodoroState.Idle:
+                return 'none'
+            default:
+                this.logger.warn(`Unexpected Pomodoro State ${state}`)
+        }
+        return 'none'
     }
 
     private setIsSkipping(newValue: boolean) {

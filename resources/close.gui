@@ -3,7 +3,7 @@
     <link rel="import" href="buttons.gui" />
 
     <svg>
-        <use id="btn-x" href="#clickable-button-base" fill="fb-white" class="combo-button-close">
+        <use id="btn-exit" href="#clickable-button-base" fill="fb-white" class="combo-button-close">
             <set href="combo-button-icon" attributeName="href" to="icons/x.png" />
             <set href="combo-button-icon-press" attributeName="href" to="icons/x_press.png" />
         </use>
