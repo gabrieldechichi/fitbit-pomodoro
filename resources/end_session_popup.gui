@@ -1,0 +1,7 @@
+<svg>
+    <use id="end-session-popup" href="#application-popup" display="none">
+        <rect x="50%-100" y="50%-100" width="200" height="200" fill="orange">
+            <text x="50%" y="50%" fill="black" font-family="System-Regular" font-size="30" text-anchor="middle">Session Ended</text>
+        </rect>
+    </use>
+</svg>

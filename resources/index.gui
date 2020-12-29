@@ -32,4 +32,6 @@
   <svg>
     <use id="mypano" href="#my-panorama" />
   </svg>
+
+  <link rel="import" href="end_session_popup.gui"/>
 </svg>

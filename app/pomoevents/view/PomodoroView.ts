@@ -4,6 +4,7 @@ import { ViewElements } from './elements';
 import { ClockFormatter, ClockFormatterSettings } from './clockFormatter';
 import { Hapitcs, VibrationPattern } from '../device/hapitcs';
 import { PanoramaView } from '../../fitbit-modules/panorama/panoramaView';
+import { EndPomodoroSessionPopup } from './endPomodoroPopup';
 
 class ButtonIcon {
     icon: string
@@ -28,6 +29,7 @@ class ControlIcons {
 export class PomodoroView extends PanoramaView implements PomodoroEventListener {
     private logger: Logger
     private pomodoro: Pomodoro
+    private endSessionPopup: EndPomodoroSessionPopup
     private clockFormatter: ClockFormatter
     private hapitcs: Hapitcs
     private isSkipping: boolean = false
@@ -36,6 +38,8 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         super(panoramaItem)
         this.logger = logger
         this.pomodoro = pomodoro
+        this.endSessionPopup = new EndPomodoroSessionPopup()
+        this.endSessionPopup.onPopupClicked = this.onEndSessionPopupClicked.bind(this)
         this.clockFormatter = new ClockFormatter(ClockFormatterSettings.getSettings())
         this.hapitcs = new Hapitcs()
 
@@ -49,22 +53,23 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         this.updateElements(this.pomodoro.getState())
     }
 
-    private playVibration(pattern: VibrationPattern, count: number) {
+    private notifyPomodoroSessionEnd(pattern: VibrationPattern, count: number) {
         const isTransitioningFromWorkOrRest = [PomodoroState.Working, PomodoroState.Resting].indexOf(this.pomodoro.getPreviousState()) >= 0
         if (isTransitioningFromWorkOrRest && !this.isSkipping) {
             this.hapitcs.playVibration(pattern, count)
+            this.showSessionEndedPopup()
         }
     }
 
     //Callbacks
     onStartWorking() {
-        this.playVibration(VibrationPattern.Alert, 2)
+        this.notifyPomodoroSessionEnd(VibrationPattern.Alert, 2)
         this.updateElements(this.pomodoro.getState())
         this.setIsSkipping(false)
     }
 
     onStartResting() {
-        this.playVibration(VibrationPattern.Alert, 2)
+        this.notifyPomodoroSessionEnd(VibrationPattern.Alert, 2)
         this.updateElements(this.pomodoro.getState())
         this.setIsSkipping(false)
     }
@@ -139,6 +144,15 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         ViewElements.txtPomodoroSessionsCounter.getElement().text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
 
         this.onPomodoroUpdate()
+    }
+
+    private showSessionEndedPopup() {
+        this.endSessionPopup.show()
+    }
+
+    private onEndSessionPopupClicked() {
+        this.endSessionPopup.dismiss()
+        this.hapitcs.stopVibration()
     }
 
     private getColorForState(state: PomodoroState): string {
