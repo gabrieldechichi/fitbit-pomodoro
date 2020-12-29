@@ -1,4 +1,4 @@
-import { PanoramaView } from '../../fitbit-modules/panorama/panorama-view';
+import { PanoramaView } from '../../fitbit-modules/panorama/panoramaView';
 import { ViewElements } from './elements';
 import { AppRuntime } from '../device/appRuntime';
 

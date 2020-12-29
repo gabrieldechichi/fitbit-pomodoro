@@ -1,8 +1,8 @@
 import { Logger } from 'ts-log';
 import { Pomodoro } from '../components/pomodoro';
 import { PomodoroView } from './pomodoroView';
-import { AppInput, EventCalbackResponse, HardwareKeyType } from '../input/app_input';
-import { PanoramaViewController } from '../../fitbit-modules/panorama/panorama-view';
+import { AppInput, EventCalbackResponse, HardwareKeyType } from '../input/appInput';
+import { PanoramaViewController } from '../../fitbit-modules/panorama/panoramaView';
 import { ExitAppView } from './exitAppView';
 
 enum AppPanoramaViews {

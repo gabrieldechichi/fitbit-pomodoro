@@ -3,7 +3,7 @@ import { Logger } from 'ts-log';
 import { ViewElements } from './elements';
 import { ClockFormatter, ClockFormatterSettings } from './clockFormatter';
 import { Hapitcs, VibrationPattern } from '../device/hapitcs';
-import { PanoramaView } from '../../fitbit-modules/panorama/panorama-view';
+import { PanoramaView } from '../../fitbit-modules/panorama/panoramaView';
 
 class ButtonIcon {
     icon: string

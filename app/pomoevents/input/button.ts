@@ -1,4 +1,4 @@
-import { ElementWrapper } from "./safe-element-events";
+import { ElementWrapper } from "./elementWrapper";
 
 export class Button extends ElementWrapper {
 
