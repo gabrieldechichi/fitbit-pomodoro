@@ -39,6 +39,7 @@ export class ViewController extends PanoramaViewController {
     }
 
     onBackPressed(): EventCalbackResponse {
+        this.show(AppPanoramaViews.Close)
         return EventCalbackResponse.handled
     }
 }

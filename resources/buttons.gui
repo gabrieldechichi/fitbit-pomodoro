@@ -1,0 +1,10 @@
+<symbol id="clickable-button-base" class='combo-button-upper-right' href='#combo-button-base'>
+    <svg>
+        <animate attributeName='fill' begin='enable' to='inherit' />
+        <animate attributeName='fill' begin='disable' to='fb-dark-gray' />
+        <animate attributeName='x' begin='expand' end='collapse' to='0' dur='0.3' final='keep' easing='ease-in-out' />
+        <animate attributeName='x' begin='collapse' end='expand' to='76' dur='0.5' final='keep' easing='ease-in-out' />
+
+        <use href='#combo-button-core-icons'/>
+    </svg>
+</symbol>

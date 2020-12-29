@@ -7,6 +7,7 @@ export class ViewElements {
     static btnToggle: Button = new Button(document.getElementById('btn-toggle'))
     static btnToggle_ActiveIcon: Button = new Button(ViewElements.btnToggleElement.getElementById('combo-button-icon'))
     static btnToggle_PressedIcon: Button = new Button(ViewElements.btnToggleElement.getElementById('combo-button-icon-press'))
+    static btnX: Button = new Button(document.getElementById('btn-x'))
 
     static btnSkip: Button = new Button(document.getElementById('btn-skip'))
     static btnReset: Button = new Button(document.getElementById('btn-x'))

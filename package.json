@@ -14,7 +14,9 @@
     "appDisplayName": "Pomodoro Events",
     "iconFile": "resources/icon.png",
     "wipeColor": "#ffffff",
-    "requestedPermissions": [],
+    "requestedPermissions": [
+      "run_background"
+    ],
     "buildTargets": [
       "meson",
       "higgs"
