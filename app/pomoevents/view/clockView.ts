@@ -4,8 +4,9 @@ import { ViewElements } from './elements';
 export class ClockView {
     clock: Clock
 
-    constructor() {
-        this.clock = new Clock(ClockGranularity.Hours, this.onClockUpdate.bind(this))
+    constructor(clock: Clock) {
+        this.clock = clock
+        this.clock.registerClockCallback(this.onClockUpdate.bind(this))
     }
 
     onClockUpdate(date: Date) {

@@ -5,6 +5,7 @@ import { AppInput, EventCalbackResponse, HardwareKeyType } from '../input/appInp
 import { PanoramaViewController } from '../../fitbit-modules/panorama/panoramaView';
 import { ExitAppView } from './exitAppView';
 import { ClockView } from './clockView';
+import { Clock } from '../../fitbit-modules/clock/clock';
 
 enum AppPanoramaViews {
     Close = 0,
@@ -25,14 +26,14 @@ export class ViewController extends PanoramaViewController {
         [AppPanoramaViews.Close]: ExitAppView
     }
 
-    constructor(logger: Logger, pomodoro: Pomodoro, input: AppInput) {
+    constructor(logger: Logger, pomodoro: Pomodoro, clock: Clock, input: AppInput) {
         super(ViewController.PanoramaId, ViewController.ContainerId)
         this.logger = logger
 
         this.input = input
         this.input.registerHardwareKeyPressedCallback(HardwareKeyType.Back, this.onBackPressed.bind(this))
 
-        // this.clockView = new ClockView()
+        this.clockView = new ClockView(clock)
 
         //Create pomodoro view
         const pomodoroPanoramaItem = this.items[AppPanoramaViews.Pomodoro]

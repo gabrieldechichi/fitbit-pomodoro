@@ -13,17 +13,27 @@ export type ClockTickEvent = (date: Date) => void
  * Clock core class
  */
 export class Clock {
-    clockCallback: ClockTickEvent
+    clockCallbacks: ClockTickEvent[] = []
 
-    constructor(granularity: ClockGranularity, callback: ClockTickEvent) {
+    constructor(granularity: ClockGranularity) {
         clock.granularity = granularity;
-        this.clockCallback = callback;
         clock.addEventListener("tick", this.onTick.bind(this))
     }
 
+    public registerClockCallback(callback: ClockTickEvent) {
+        this.clockCallbacks[this.clockCallbacks.length] = callback
+    }
+
+    public deregisterClockCallback(callback: ClockTickEvent) {
+        this.clockCallbacks.splice(this.clockCallbacks.indexOf(callback), 1)
+    }
+
     private onTick(event: TickEvent) {
-        if (this.clockCallback) {
-            this.clockCallback(event.date)
+        for (let i = 0; i < this.clockCallbacks.length; i++) {
+            const callback = this.clockCallbacks[i];
+            if (callback) {
+                callback(event.date)
+            }
         }
     }
 }

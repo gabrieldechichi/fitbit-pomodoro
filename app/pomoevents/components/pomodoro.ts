@@ -50,11 +50,12 @@ export class Pomodoro {
     private workSessionNumber: number = 0
     //end state variables
 
-    constructor(settings: PomodoroSettings, logger: Logger) {
+    constructor(settings: PomodoroSettings, clock: Clock, logger: Logger) {
         this.logger = logger
         this.settings = settings
         this.state = this.previousState = PomodoroState.Idle
-        this.clock = new Clock(ClockGranularity.Seconds, this.onClockUpdate.bind(this))
+        this.clock = clock
+        this.clock.registerClockCallback(this.onClockUpdate.bind(this))
     }
 
     //begin public interface
