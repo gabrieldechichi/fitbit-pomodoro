@@ -40,7 +40,7 @@ const vibrationConfigs: Dictionary<VibrationPattern, VibrationConfig> = {
 export class Hapitcs {
     isPlayingVibration: boolean
 
-    public playVibration(pattern: VibrationPattern, numberOfTimes: number) {
+    public playVibration(pattern: VibrationPattern, numberOfTimes: number, onVibrationStopCallbak: () => void = null) {
         if (this.isPlayingVibration) {
             return
         }
@@ -51,7 +51,12 @@ export class Hapitcs {
 
         vibration.start(pattern)
 
-        setTimeout(this.stopVibration.bind(this), config.getPlaybackDurationSeconds(numberOfTimes) * 1000)
+        setTimeout(() => {
+            this.stopVibration()
+            if (onVibrationStopCallbak) {
+                onVibrationStopCallbak()
+            }
+        }, config.getPlaybackDurationSeconds(numberOfTimes) * 1000)
     }
 
     public stopVibration() {
