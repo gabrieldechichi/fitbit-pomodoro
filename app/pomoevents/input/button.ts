@@ -11,3 +11,7 @@ export class GraphicsElementWrapper extends ElementWrapper<GraphicsElement> {
 export class ArcElementWrapper extends ElementWrapper<ArcElement> {
 
 }
+
+export class RectElementWrapper extends ElementWrapper<RectElement> {
+
+}

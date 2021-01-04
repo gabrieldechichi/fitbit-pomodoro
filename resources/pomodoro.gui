@@ -1,33 +1,38 @@
 <svg id="pomodoro-view">
-  <section>
-    <arc x="50%-110" y="50%-110" width="220" height="220" fill="fb-extra-dark-gray" arc-width="10" start-angle="0" sweep-angle="360"/>
-    <arc id="countdown-arc" x="50%-110" y="50%-110" width="220" height="220" fill="fb-red" arc-width="10" start-angle="0" sweep-angle="-140"/>
+  <!-- TOP AREA -->
+  <text id="clock-time" class="clock-time" x="5%" y="35">
+    13:24
+  </text>
+  <text id="sessions-counter" class="pomo-sessions" x="5%" y="50%-20">
+    Working: 1/4
+  </text>
+  <!-- END TOP AREA -->
 
-    <text id="countdown-counter" font-family="System-Bold" font-size="60" text-anchor="middle" x="50%" y="50%+15" fill="white">
-      24:59
-    </text>
+  <line x1="0" y1="50%" x2="100%" y2="50%" fill="fb-white" stroke-width="3" />
 
-    <text id="interval-counter" font-family="System-Bold" font-size="32" text-anchor="middle" x="50%" y="50%+55" fill="white">
-      11/12
-    </text>
-  </section>
+  <!-- BOTTOM AREA -->
+  <text id="countdown-counter" class="pomo-countdown">
+    24:59
+  </text>
+  <!-- END BOTTOM AREA -->
 
-  <!-- Buttons -->
+  <!-- BUTTONS -->
   <svg>
-    <!-- TOP LEFT -->
-    <use id="btn-x" href="#combo-button-upper-left" fill="fb-white">
-      <set href="combo-button-icon" attributeName="href" to="icons/x.png"/>
-      <set href="combo-button-icon-press" attributeName="href" to="icons/x_press.png"/>
-    </use>
-    <!-- TOP RIGHT -->
+    <!-- SKIP BUTTON - TOP RIGHT -->
     <use id="btn-skip" href="#combo-button-upper-right" fill="fb-white">
       <set href="combo-button-icon" attributeName="href" to="icons/skip.png"/>
       <set href="combo-button-icon-press" attributeName="href" to="icons/skip_press.png"/>
+    </use>
+    <!-- CLOSE BUTTON - TOP RIGHT -->
+    <use id="btn-x" href="#combo-button-upper-right" fill="fb-white">
+      <set href="combo-button-icon" attributeName="href" to="icons/x.png"/>
+      <set href="combo-button-icon-press" attributeName="href" to="icons/x_press.png"/>
     </use>
     <!-- BOTTOM RIGHT -->
     <use id="btn-toggle" href="#combo-button-lower-right" fill="fb-white">
       <set href="combo-button-icon" attributeName="href" to="icons/play.png"/>
       <set href="combo-button-icon-press" attributeName="href" to="icons/play_press.png"/>
+      <set href='combo-button-stroke' attributeName='display' to='inline' />
     </use>
   </svg>
 </svg>

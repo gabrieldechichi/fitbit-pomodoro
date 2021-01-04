@@ -4,7 +4,24 @@
         <animate attributeName='fill' begin='disable' to='fb-dark-gray' />
         <animate attributeName='x' begin='expand' end='collapse' to='0' dur='0.3' final='keep' easing='ease-in-out' />
         <animate attributeName='x' begin='collapse' end='expand' to='76' dur='0.5' final='keep' easing='ease-in-out' />
-
         <use href='#combo-button-core-icons'/>
     </svg>
 </symbol>
+
+<!-- BUTTON SIZE ADJUST -->
+<!--<set href='#combo-button-stroke' attributeName='x' to='-10' />
+      <set href='#combo-button-stroke' attributeName='y' to='-10' />
+
+      <set href='#combo-button-press' attributeName='x' to='-10' />
+      <set href='#combo-button-press' attributeName='y' to='-10' />
+
+      <set href='#combo-button-icon' attributeName='x' to='-8' />
+      <set href='#combo-button-icon' attributeName='y' to='-8' />
+      <set href='#combo-button-icon' attributeName='height' to='45' />
+      <set href='#combo-button-icon' attributeName='width' to='45' />
+
+      <set href='#combo-button-icon-press' attributeName='x' to='-8' />
+      <set href='#combo-button-icon-press' attributeName='y' to='-8' />
+      <set href='#combo-button-icon-press' attributeName='height' to='45' />
+      <set href='#combo-button-icon-press' attributeName='width' to='45' />-->
+<!-- END BUTTON SIZE ADJUST-->

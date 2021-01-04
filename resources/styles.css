@@ -17,3 +17,39 @@
   x: 50%-20;
   y: 50%-20
 }
+
+.pomo-countdown {
+  x: 5%;
+  y: 90%;
+  text-anchor: start;
+  font-size: 95;
+  font-weight: regular;
+  fill: white;
+  font-family: Colfax-Regular;
+}
+
+.pomo-sessions {
+  text-anchor: start;
+  font-size: 30;
+  font-weight: regular;
+  fill: white;
+  font-family: Colfax-Light;
+}
+
+.clock-time {
+  text-anchor: start;
+  font-size: 30;
+  font-weight: regular;
+  fill: white;
+  font-family: Colfax-Light;
+}
+
+.pomo-button {
+  scale: 2;
+}
+
+.pomo-gradient-green { gradient-color1: fb-green;   gradient-color2: fb-mint; gradient-x1: 0; gradient-x2: 0;}
+.pomo-gradient-red { gradient-color1: red;   gradient-color2: tomato; gradient-x1: 0; gradient-x2: 0;}
+.pomo-gradient-blue-light { gradient-color1: fb-blue;   gradient-color2: fb-aqua;}
+.pomo-gradient-blue-dark { gradient-color1: "#103d70";   gradient-color2: "#02b7db"; gradient-x1: 0; gradient-x2: 0;}
+.pomo-gradient-grey { gradient-color1: "#02080e";   gradient-color2: "#688287"; gradient-x1: 0; gradient-x2: 0;}

@@ -1,7 +1,4 @@
 <svg>
-    <link rel="import" href="/mnt/sysassets/widgets/button_widget.gui" />
-    <link rel="import" href="buttons.gui" />
-
     <svg>
         <use id="btn-exit" href="#clickable-button-base" fill="fb-white" class="combo-button-close">
             <set href="combo-button-icon" attributeName="href" to="icons/x.png" />

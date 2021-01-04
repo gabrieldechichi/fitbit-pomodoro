@@ -1,5 +1,5 @@
 import document from "document"
-import { Button, GraphicsElementWrapper, ArcElementWrapper } from '../input/button';
+import { Button, GraphicsElementWrapper, ArcElementWrapper, RectElementWrapper } from '../input/button';
 
 export class ViewElements {
     private static btnToggleElement = document.getElementById('btn-toggle')
@@ -13,6 +13,6 @@ export class ViewElements {
     static btnReset: Button = new Button(document.getElementById('btn-x'))
 
     static txtPomodoroTime: GraphicsElementWrapper = new GraphicsElementWrapper(document.getElementById('countdown-counter') as GraphicsElement)
-    static txtPomodoroSessionsCounter: GraphicsElementWrapper = new GraphicsElementWrapper(document.getElementById('interval-counter') as GraphicsElement)
-    static arcPomodoroProgress: ArcElementWrapper = new ArcElementWrapper(document.getElementById('countdown-arc') as ArcElement)
+    static txtPomodoroSessionsCounter: GraphicsElementWrapper = new GraphicsElementWrapper(document.getElementById('sessions-counter') as GraphicsElement)
+    static pomodoroProgress: RectElementWrapper = new RectElementWrapper(document.getElementById('pomodoro-progress') as RectElement)
 }

@@ -5,6 +5,7 @@ import { ClockFormatter, ClockFormatterSettings } from './clockFormatter';
 import { Hapitcs, VibrationPattern } from '../device/hapitcs';
 import { PanoramaView } from '../../fitbit-modules/panorama/panoramaView';
 import { EndPomodoroSessionPopup } from './endPomodoroPopup';
+import { AppRuntime } from '../device/appRuntime';
 
 class ButtonIcon {
     icon: string
@@ -92,14 +93,14 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     }
 
     onPomodoroUpdate() {
-        //Update arc
         const remainingTimeMs = this.pomodoro.getRemainingTimeMs()
         this.clockFormatter.setMilliSeconds(remainingTimeMs)
         ViewElements.txtPomodoroTime.getElement().text = this.clockFormatter.toString()
 
         const targetTime = this.pomodoro.getTargetSessionTimeForCurrentState()
 
-        ViewElements.arcPomodoroProgress.getElement().sweepAngle = Math.ceil(((targetTime - remainingTimeMs) / targetTime) * 360)
+        const percentProgress = (targetTime - remainingTimeMs) / targetTime
+        ViewElements.pomodoroProgress.getElement().width = AppRuntime.getWidthPercent(1 - percentProgress)
     }
     //End callbacks
 
@@ -129,7 +130,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         const color = this.getColorForState(state)
         ViewElements.txtPomodoroSessionsCounter.getElement().style.fill = color
         ViewElements.txtPomodoroTime.getElement().style.fill = color
-        ViewElements.arcPomodoroProgress.getElement().style.fill = color
+        ViewElements.pomodoroProgress.getElement().class = this.getProgressGradientForState(state)
 
         //Update button icons
         const playPauseIcon = this.getToggleButtonIconForState(state)
@@ -137,11 +138,13 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         ViewElements.btnToggle_PressedIcon.setImage(playPauseIcon.iconPressed)
 
         ViewElements.btnSkip.getElement<GraphicsElement>().style.display = this.getSkipButtonVisibility(state)
+        ViewElements.btnReset.getElement<GraphicsElement>().style.display = this.getStopButtonVisibility(state)
 
         //Update sessions count
         const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
         const remainingSessionsToLongBreak = this.pomodoro.getWorkSessionNumber()
-        ViewElements.txtPomodoroSessionsCounter.getElement().text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
+        const stateName = this.getStateName(state)
+        ViewElements.txtPomodoroSessionsCounter.getElement().text = `${stateName}: ${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
 
         this.onPomodoroUpdate()
     }
@@ -170,6 +173,38 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         return ""
     }
 
+    private getProgressGradientForState(state: PomodoroState): string {
+        switch (state) {
+            case PomodoroState.Working:
+                return 'pomo-gradient-red'
+            case PomodoroState.Resting:
+                return 'pomo-gradient-green'
+            case PomodoroState.Paused:
+                return 'pomo-gradient-blue-dark'
+            case PomodoroState.Idle:
+                return 'pomo-gradient-grey'
+            default:
+                this.logger.warn(`Unexpected Pomodoro State ${state}`)
+        }
+        return ""
+    }
+
+    private getStateName(state: PomodoroState): string {
+        switch (state) {
+            case PomodoroState.Working:
+                return 'Working'
+            case PomodoroState.Resting:
+                return 'Resting'
+            case PomodoroState.Paused:
+                return 'Paused'
+            case PomodoroState.Idle:
+                return 'Stopped'
+            default:
+                this.logger.warn(`Unexpected Pomodoro State ${state}`)
+        }
+        return ""
+    }
+
     private getToggleButtonIconForState(state: PomodoroState): ButtonIcon {
         switch (state) {
             case PomodoroState.Working:
@@ -192,6 +227,20 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
             case PomodoroState.Paused:
             case PomodoroState.Idle:
                 return 'none'
+            default:
+                this.logger.warn(`Unexpected Pomodoro State ${state}`)
+        }
+        return 'none'
+    }
+
+    private getStopButtonVisibility(state: PomodoroState): 'inline' | 'none' {
+        switch (state) {
+            case PomodoroState.Working:
+            case PomodoroState.Resting:
+            case PomodoroState.Idle:
+                return 'none'
+            case PomodoroState.Paused:
+                return 'inline'
             default:
                 this.logger.warn(`Unexpected Pomodoro State ${state}`)
         }
