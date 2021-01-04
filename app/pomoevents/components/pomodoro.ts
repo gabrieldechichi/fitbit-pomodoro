@@ -1,5 +1,5 @@
 import { Logger } from 'ts-log';
-import { Clock, ClockGranularity } from './clock';
+import { Clock, ClockGranularity } from '../../fitbit-modules/clock/clock';
 
 export class PomodoroSettings {
     workTimeSeconds: number = 5

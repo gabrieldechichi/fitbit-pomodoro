@@ -15,4 +15,6 @@ export class ViewElements {
     static txtPomodoroTime: GraphicsElementWrapper = new GraphicsElementWrapper(document.getElementById('countdown-counter') as GraphicsElement)
     static txtPomodoroSessionsCounter: GraphicsElementWrapper = new GraphicsElementWrapper(document.getElementById('sessions-counter') as GraphicsElement)
     static pomodoroProgress: RectElementWrapper = new RectElementWrapper(document.getElementById('pomodoro-progress') as RectElement)
+
+    static txtClock: GraphicsElementWrapper = new GraphicsElementWrapper(document.getElementById('clock-time') as GraphicsElement)
 }
