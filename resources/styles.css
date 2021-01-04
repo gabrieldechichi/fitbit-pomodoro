@@ -44,8 +44,12 @@
   font-family: Colfax-Light;
 }
 
-.pomo-button {
-  scale: 2;
+.pomo-end-session-text {
+  text-anchor: start;
+  font-size: 40;
+  font-weight: regular;
+  fill: white;
+  font-family: Colfax-Regular;
 }
 
 .pomo-gradient-green { gradient-color1: fb-green;   gradient-color2: fb-mint; gradient-x1: 0; gradient-x2: 0;}

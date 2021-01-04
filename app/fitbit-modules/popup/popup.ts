@@ -12,13 +12,23 @@ export class Popup {
 
     public show() {
         this.root.getElement().style.display = 'inline'
+        this.onShow()
     }
 
     public dismiss() {
         this.root.getElement().style.display = 'none'
+        this.onDismiss()
     }
 
     protected onClick(evt: MouseEvent) {
         this.onPopupClicked()
+    }
+
+    protected onShow() {
+
+    }
+
+    protected onDismiss() {
+
     }
 }

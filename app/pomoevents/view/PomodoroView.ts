@@ -39,7 +39,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         super(panoramaItem)
         this.logger = logger
         this.pomodoro = pomodoro
-        this.endSessionPopup = new EndPomodoroSessionPopup()
+        this.endSessionPopup = new EndPomodoroSessionPopup(this.pomodoro)
         this.endSessionPopup.onPopupClicked = this.onEndSessionPopupClicked.bind(this)
         this.clockFormatter = new ClockFormatter(ClockFormatterSettings.getSettings())
         this.hapitcs = new Hapitcs()
