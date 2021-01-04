@@ -2,10 +2,10 @@ import { Logger } from 'ts-log';
 import { Clock, ClockGranularity } from '../../fitbit-modules/clock/clock';
 
 export class PomodoroSettings {
-    workTimeSeconds: number = 5
-    shortBreakTimeSeconds: number = 5
-    longBreakTimeSeconds: number = 10
-    numberOfSessionsBeforeBreak: number = 2
+    workTimeSeconds: number = 25 * 60
+    shortBreakTimeSeconds: number = 5 * 60
+    longBreakTimeSeconds: number = 15 * 60
+    numberOfSessionsBeforeBreak: number = 4
 
     static getSettings(): PomodoroSettings {
         return new PomodoroSettings()

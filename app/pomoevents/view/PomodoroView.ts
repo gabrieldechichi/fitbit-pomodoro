@@ -159,11 +159,12 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     }
 
     private getColorForState(state: PomodoroState): string {
+        return "white"
         switch (state) {
             case PomodoroState.Working:
-                return '#d33b37'
+                return '#570000'
             case PomodoroState.Resting:
-                return 'fb-blue'
+                return '#005721'
             case PomodoroState.Paused:
             case PomodoroState.Idle:
                 return 'gray'

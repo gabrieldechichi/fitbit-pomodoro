@@ -27,7 +27,7 @@ export class ClockFormatter {
     }
 
     public toString(): string {
-        return `${this.minutes}${this.settings.separator}${this.padSeconds(this.seconds)}`
+        return `${this.padSeconds(this.minutes)}${this.settings.separator}${this.padSeconds(this.seconds)}`
     }
 
     private padSeconds(seconds: number): string {
