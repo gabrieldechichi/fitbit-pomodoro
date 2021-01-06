@@ -1,20 +1,19 @@
 import document from "document"
-import { Button, GraphicsElementWrapper, ArcElementWrapper, RectElementWrapper } from '../input/button';
 
 export class ViewElements {
     private static btnToggleElement = document.getElementById('btn-toggle')
 
-    static btnToggle: Button = new Button(document.getElementById('btn-toggle'))
-    static btnToggle_ActiveIcon: Button = new Button(ViewElements.btnToggleElement.getElementById('combo-button-icon'))
-    static btnToggle_PressedIcon: Button = new Button(ViewElements.btnToggleElement.getElementById('combo-button-icon-press'))
-    static btnX: Button = new Button(document.getElementById('btn-exit'))
+    static btnToggle: Element = document.getElementById('btn-toggle')
+    static btnToggle_ActiveIcon: Element = ViewElements.btnToggleElement.getElementById('combo-button-icon')
+    static btnToggle_PressedIcon: Element = ViewElements.btnToggleElement.getElementById('combo-button-icon-press')
+    static btnX: Element = document.getElementById('btn-exit')
 
-    static btnSkip: Button = new Button(document.getElementById('btn-skip'))
-    static btnReset: Button = new Button(document.getElementById('btn-x'))
+    static btnSkip: GraphicsElement = document.getElementById('btn-skip') as GraphicsElement
+    static btnReset: GraphicsElement = document.getElementById('btn-x') as GraphicsElement
 
-    static txtPomodoroTime: GraphicsElementWrapper = new GraphicsElementWrapper(document.getElementById('countdown-counter') as GraphicsElement)
-    static txtPomodoroSessionsCounter: GraphicsElementWrapper = new GraphicsElementWrapper(document.getElementById('sessions-counter') as GraphicsElement)
-    static pomodoroProgress: RectElementWrapper = new RectElementWrapper(document.getElementById('pomodoro-progress') as RectElement)
+    static txtPomodoroTime: GraphicsElement = document.getElementById('countdown-counter') as GraphicsElement
+    static txtPomodoroSessionsCounter: GraphicsElement = document.getElementById('sessions-counter') as GraphicsElement
+    static pomodoroProgress: RectElement = document.getElementById('pomodoro-progress') as RectElement
 
-    static txtClock: GraphicsElementWrapper = new GraphicsElementWrapper(document.getElementById('clock-time') as GraphicsElement)
+    static txtClock: GraphicsElement = document.getElementById('clock-time') as GraphicsElement
 }

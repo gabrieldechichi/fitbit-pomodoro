@@ -21,7 +21,7 @@ export class ClockView {
         }
 
         const minutes = date.getMinutes()
-        ViewElements.txtClock.getElement().text = `${this.zeroPad(hours)}:${this.zeroPad(minutes)} ${amPm}`
+        ViewElements.txtClock.text = `${this.zeroPad(hours)}:${this.zeroPad(minutes)} ${amPm}`
     }
 
     private zeroPad(n: number): string {

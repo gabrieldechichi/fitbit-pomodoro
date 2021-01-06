@@ -4,6 +4,7 @@ import { LoggerFactory } from './pomoevents/components/logger';
 import { ViewController } from './pomoevents/view/viewController';
 import { AppInput } from './pomoevents/input/appInput';
 import { Clock, ClockGranularity } from './fitbit-modules/clock/clock';
+import { MemoryProfiler } from './fitbit-modules/performance/memory';
 
 class App {
     logger: Logger
@@ -21,4 +22,7 @@ class App {
     }
 }
 
+const memory = new MemoryProfiler()
+memory.logMemoryStats('Before app')
 const app = new App()
+memory.logMemoryStats('After app')

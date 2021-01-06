@@ -6,6 +6,7 @@ import { Hapitcs, VibrationPattern } from '../device/hapitcs';
 import { PanoramaView } from '../../fitbit-modules/panorama/panoramaView';
 import { EndPomodoroSessionPopup } from './endPomodoroPopup';
 import { AppRuntime } from '../device/appRuntime';
+import { DuplicateEventPreventer } from '../../fitbit-modules/panorama/duplicateEventPreventer';
 
 class ButtonIcon {
     icon: string
@@ -34,6 +35,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     private clockFormatter: ClockFormatter
     private hapitcs: Hapitcs
     private isSkipping: boolean = false
+    private duplicateEventPreventer: DuplicateEventPreventer
 
     constructor(logger: Logger, pomodoro: Pomodoro, panoramaItem: Element) {
         super(panoramaItem)
@@ -43,13 +45,13 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         this.endSessionPopup.onPopupClicked = this.onEndSessionPopupClicked.bind(this)
         this.clockFormatter = new ClockFormatter(ClockFormatterSettings.getSettings())
         this.hapitcs = new Hapitcs()
+        this.duplicateEventPreventer = new DuplicateEventPreventer(this.logger)
 
         this.pomodoro.registerListener(this)
 
-        ViewElements.txtPomodoroSessionsCounter.onanimationend
-        ViewElements.btnToggle.addEventListener('activate', this.onToggleButtonPressed.bind(this))
-        ViewElements.btnSkip.addEventListener('activate', this.onSkipButtonPressed.bind(this))
-        ViewElements.btnReset.addEventListener('activate', this.onResetButtonPressed.bind(this))
+        this.duplicateEventPreventer.addWrappedEventListener(ViewElements.btnToggle, 'activate', this.onToggleButtonPressed.bind(this))
+        this.duplicateEventPreventer.addWrappedEventListener(ViewElements.btnSkip, 'activate', this.onSkipButtonPressed.bind(this))
+        this.duplicateEventPreventer.addWrappedEventListener(ViewElements.btnReset, 'activate', this.onResetButtonPressed.bind(this))
 
         this.updateElements(this.pomodoro.getState())
     }
@@ -79,9 +81,9 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         this.updateElements(this.pomodoro.getState())
 
         const previousStateColor = this.getColorForState(this.pomodoro.getPreviousState())
-        ViewElements.txtPomodoroSessionsCounter.getElement().style.fill = previousStateColor
-        ViewElements.txtPomodoroSessionsCounter.getElement().style.fill = previousStateColor
-        ViewElements.txtPomodoroTime.getElement().style.fill = previousStateColor
+        ViewElements.txtPomodoroSessionsCounter.style.fill = previousStateColor
+        ViewElements.txtPomodoroSessionsCounter.style.fill = previousStateColor
+        ViewElements.txtPomodoroTime.style.fill = previousStateColor
     }
 
     onResumed() {
@@ -95,12 +97,12 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     onPomodoroUpdate() {
         const remainingTimeMs = this.pomodoro.getRemainingTimeMs()
         this.clockFormatter.setMilliSeconds(remainingTimeMs)
-        ViewElements.txtPomodoroTime.getElement().text = this.clockFormatter.toString()
+        ViewElements.txtPomodoroTime.text = this.clockFormatter.toString()
 
         const targetTime = this.pomodoro.getTargetSessionTimeForCurrentState()
 
         const percentProgress = (targetTime - remainingTimeMs) / targetTime
-        ViewElements.pomodoroProgress.getElement().width = AppRuntime.getWidthPercent(1 - percentProgress)
+        ViewElements.pomodoroProgress.width = AppRuntime.getWidthPercent(1 - percentProgress)
     }
     //End callbacks
 
@@ -128,23 +130,23 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     private updateElements(state: PomodoroState) {
         //Update colors
         const color = this.getColorForState(state)
-        ViewElements.txtPomodoroSessionsCounter.getElement().style.fill = color
-        ViewElements.txtPomodoroTime.getElement().style.fill = color
-        ViewElements.pomodoroProgress.getElement().class = this.getProgressGradientForState(state)
+        ViewElements.txtPomodoroSessionsCounter.style.fill = color
+        ViewElements.txtPomodoroTime.style.fill = color
+        ViewElements.pomodoroProgress.class = this.getProgressGradientForState(state)
 
         //Update button icons
         const playPauseIcon = this.getToggleButtonIconForState(state)
-        ViewElements.btnToggle_ActiveIcon.setImage(playPauseIcon.icon)
-        ViewElements.btnToggle_PressedIcon.setImage(playPauseIcon.iconPressed)
+        ViewElements.btnToggle_ActiveIcon['image' as any] = playPauseIcon.icon
+        ViewElements.btnToggle_PressedIcon['image' as any] = playPauseIcon.iconPressed
 
-        ViewElements.btnSkip.getElement<GraphicsElement>().style.display = this.getSkipButtonVisibility(state)
-        ViewElements.btnReset.getElement<GraphicsElement>().style.display = this.getStopButtonVisibility(state)
+        ViewElements.btnSkip.style.display = this.getSkipButtonVisibility(state)
+        ViewElements.btnReset.style.display = this.getStopButtonVisibility(state)
 
         //Update sessions count
         const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
         const remainingSessionsToLongBreak = this.pomodoro.getWorkSessionNumber()
         const stateName = this.getStateName(state)
-        ViewElements.txtPomodoroSessionsCounter.getElement().text = `${stateName}: ${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
+        ViewElements.txtPomodoroSessionsCounter.text = `${stateName}: ${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
 
         this.onPomodoroUpdate()
     }
