@@ -27,6 +27,7 @@ export class PanoramaViewController {
     private panoramaContainer: Element
     private panoramaId: string
     private panoramaContainerId: string
+    private currentPanoramaIndex: number = -1
 
     protected readonly items: Element[]
 
@@ -67,6 +68,12 @@ export class PanoramaViewController {
     }
 
     private onPanoramaSelected(evt: Event) {
+        const previousView = this.getCurrentView()
+        if (previousView) {
+            previousView.onDismiss()
+        }
+
+        this.currentPanoramaIndex = this.panoramaContainer.value as number
         const currentView = this.getCurrentView()
         if (currentView) {
             currentView.onShow()
@@ -78,10 +85,11 @@ export class PanoramaViewController {
     }
 
     private getActivePanoramaIndex(): number {
-        return this.panoramaContainer.value as number
+        return this.currentPanoramaIndex
     }
 
     private setActivePanoramaIndex(index: number) {
+        this.currentPanoramaIndex = index
         this.panoramaContainer.value = index
     }
 
