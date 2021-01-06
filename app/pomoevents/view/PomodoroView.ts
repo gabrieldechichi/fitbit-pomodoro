@@ -57,23 +57,23 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         this.updateElements(this.pomodoro.getState())
     }
 
-    private notifyPomodoroSessionEnd(pattern: VibrationPattern, count: number) {
+    private notifyPomodoroSessionEnd() {
         const isTransitioningFromWorkOrRest = [PomodoroState.Working, PomodoroState.Resting].indexOf(this.pomodoro.getPreviousState()) >= 0
         if (isTransitioningFromWorkOrRest && !this.isSkipping) {
-            this.hapitcs.playVibration(pattern, count, () => this.endSessionPopup.dismiss())
+            this.hapitcs.playVibration(VibrationPattern.Alert, 3, () => this.endSessionPopup.dismiss())
             this.showSessionEndedPopup()
         }
     }
 
     //Callbacks
     onStartWorking() {
-        this.notifyPomodoroSessionEnd(VibrationPattern.Alert, 2)
+        this.notifyPomodoroSessionEnd()
         this.updateElements(this.pomodoro.getState())
         this.setIsSkipping(false)
     }
 
     onStartResting() {
-        this.notifyPomodoroSessionEnd(VibrationPattern.Alert, 2)
+        this.notifyPomodoroSessionEnd()
         this.updateElements(this.pomodoro.getState())
         this.setIsSkipping(false)
     }

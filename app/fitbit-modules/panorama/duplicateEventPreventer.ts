@@ -19,7 +19,7 @@ type AcceptableEvents = 'activate' | 'animationend' | 'animationiteration' | 'an
 export class DuplicateEventPreventer {
     logger: Logger
     elementEventCalls: ElementEventCalls = {}
-    private readonly preventDelayEpislonMs = 10
+    private readonly preventDelayEpislonMs = 50
 
     constructor(logger: Logger) {
         this.logger = logger
@@ -43,6 +43,7 @@ export class DuplicateEventPreventer {
             }
 
             const now = Date.now()
+
             if (this.elementEventCalls[elementId]) {
                 const lastValidCallForEvent = this.elementEventCalls[elementId][evt.type]
                 if (lastValidCallForEvent) {
