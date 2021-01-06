@@ -7,6 +7,7 @@ import { PanoramaView } from '../../fitbit-modules/panorama/panoramaView';
 import { EndPomodoroSessionPopup } from './endPomodoroPopup';
 import { AppRuntime } from '../device/appRuntime';
 import { DuplicateEventPreventer } from '../../fitbit-modules/panorama/duplicateEventPreventer';
+import { AppPanoramaViews, ViewController } from './ViewController';
 
 class ButtonIcon {
     icon: string
@@ -37,8 +38,8 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     private isSkipping: boolean = false
     private duplicateEventPreventer: DuplicateEventPreventer
 
-    constructor(logger: Logger, pomodoro: Pomodoro, panoramaItem: Element) {
-        super(panoramaItem)
+    constructor(logger: Logger, pomodoro: Pomodoro, panoramaItem: Element, controller: ViewController) {
+        super(panoramaItem, controller)
         this.logger = logger
         this.pomodoro = pomodoro
         this.endSessionPopup = new EndPomodoroSessionPopup(this.pomodoro)
@@ -108,22 +109,28 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
 
     //Control callbacks
     private onToggleButtonPressed(event: MouseEvent) {
-        if (this.pomodoro.isRunning()) {
-            this.pomodoro.pause()
-        } else if (this.pomodoro.isPaused()) {
-            this.pomodoro.resume()
-        } else {
-            this.pomodoro.start()
+        if (this.isVisible()) {
+            if (this.pomodoro.isRunning()) {
+                this.pomodoro.pause()
+            } else if (this.pomodoro.isPaused()) {
+                this.pomodoro.resume()
+            } else {
+                this.pomodoro.start()
+            }
         }
     }
 
     private onSkipButtonPressed(event: MouseEvent) {
-        this.setIsSkipping(true)
-        this.pomodoro.skip()
+        if (this.isVisible()) {
+            this.setIsSkipping(true)
+            this.pomodoro.skip()
+        }
     }
 
     private onResetButtonPressed(event: MouseEvent) {
-        this.pomodoro.stop()
+        if (this.isVisible()) {
+            this.pomodoro.stop()
+        }
     }
     //End Control callbacks
 

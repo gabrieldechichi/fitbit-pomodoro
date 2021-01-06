@@ -7,7 +7,7 @@ import { ExitAppView } from './exitAppView';
 import { ClockView } from './clockView';
 import { Clock } from '../../fitbit-modules/clock/clock';
 
-enum AppPanoramaViews {
+export enum AppPanoramaViews {
     Close = 0,
     Pomodoro = 1
 }
@@ -32,25 +32,28 @@ export class ViewController extends PanoramaViewController {
 
         this.input = input
         this.input.registerHardwareKeyPressedCallback(HardwareKeyType.Back, this.onBackPressed.bind(this))
-        this.input.registerHardwareKeyPressedCallback(HardwareKeyType.Down, this.onRightButtonsPressed.bind(this))
+        this.input.registerHardwareKeyPressedCallback(HardwareKeyType.Up, this.onUpOrDownButtonPressed.bind(this))
+        this.input.registerHardwareKeyPressedCallback(HardwareKeyType.Down, this.onUpOrDownButtonPressed.bind(this))
 
         this.clockView = new ClockView(clock)
 
         //Create pomodoro view
         const pomodoroPanoramaItem = this.items[AppPanoramaViews.Pomodoro]
-        this.pomodoroView = new PomodoroView(logger, pomodoro, pomodoroPanoramaItem)
+        this.pomodoroView = new PomodoroView(logger, pomodoro, pomodoroPanoramaItem, this)
         this.panoramaObjects[AppPanoramaViews.Pomodoro] = this.pomodoroView
 
         this.show(AppPanoramaViews.Pomodoro)
     }
 
-    onBackPressed(): EventCalbackResponse {
-        this.show(AppPanoramaViews.Close)
+    onUpOrDownButtonPressed(): EventCalbackResponse {
+        setTimeout(() => {
+            this.show(AppPanoramaViews.Pomodoro)
+        }, 10);
         return EventCalbackResponse.handled
     }
 
-    onRightButtonsPressed(): EventCalbackResponse {
-        this.show(AppPanoramaViews.Pomodoro)
+    onBackPressed(): EventCalbackResponse {
+        this.show(AppPanoramaViews.Close)
         return EventCalbackResponse.handled
     }
 }

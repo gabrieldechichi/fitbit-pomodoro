@@ -2,8 +2,10 @@ import document from "document"
 
 export class PanoramaView {
     item: Element
-    constructor(item: Element) {
+    private viewController: PanoramaViewController
+    constructor(item: Element, controller: PanoramaViewController) {
         this.item = item
+        this.viewController = controller
     }
 
     public onShow() {
@@ -12,6 +14,14 @@ export class PanoramaView {
 
     public onDismiss() {
 
+    }
+
+    protected getViewController<T extends PanoramaViewController>(): T {
+        return this.viewController as T
+    }
+
+    public isVisible(): boolean {
+        return this.getViewController().getCurrentView() === this
     }
 }
 
@@ -113,7 +123,7 @@ export class PanoramaViewController {
             return null
         }
 
-        const newView = new constructor(item)
+        const newView = new constructor(item, this)
 
         this.panoramaObjects[index] = newView
         return newView
