@@ -32,6 +32,7 @@ export class ViewController extends PanoramaViewController {
 
         this.input = input
         this.input.registerHardwareKeyPressedCallback(HardwareKeyType.Back, this.onBackPressed.bind(this))
+        this.input.registerHardwareKeyPressedCallback(HardwareKeyType.Down, this.onRightButtonsPressed.bind(this))
 
         this.clockView = new ClockView(clock)
 
@@ -45,6 +46,11 @@ export class ViewController extends PanoramaViewController {
 
     onBackPressed(): EventCalbackResponse {
         this.show(AppPanoramaViews.Close)
+        return EventCalbackResponse.handled
+    }
+
+    onRightButtonsPressed(): EventCalbackResponse {
+        this.show(AppPanoramaViews.Pomodoro)
         return EventCalbackResponse.handled
     }
 }

@@ -49,9 +49,15 @@ export class PanoramaViewController {
 
     public show(panoramaIndex: number) {
         const currentView = this.getCurrentView()
+
+        if (currentView && currentView === this.panoramaObjects[panoramaIndex]) {
+            return
+        }
+
         if (currentView) {
             currentView.onDismiss()
         }
+
         this.setActivePanoramaIndex(panoramaIndex)
     }
 
