@@ -30,6 +30,15 @@ export interface PomodoroEventListener {
 
 export type PomodoroStateEvent = (state: PomodoroState) => void
 
+class DummyPomodoroListener implements PomodoroEventListener {
+    onStartWorking() { }
+    onStartResting() { }
+    onPaused() { }
+    onResumed() { }
+    onIdle() { }
+    onPomodoroUpdate() { }
+}
+
 export class Pomodoro {
     private logger: Logger
     private clock: Clock
@@ -56,6 +65,7 @@ export class Pomodoro {
         this.state = this.previousState = PomodoroState.Idle
         this.clock = clock
         this.clock.registerClockCallback(this.onClockUpdate.bind(this))
+        this.listener = new DummyPomodoroListener()
     }
 
     //begin public interface
