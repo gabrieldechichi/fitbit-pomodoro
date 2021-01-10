@@ -8,7 +8,7 @@
     <text id="calendar-day" class="calendar-day">12</text>
   </image>
 
-  <text id="sessions-counter" class="pomo-sessions" x="5%" y="50%-20">
+  <text id="sessions-counter" class="pomo-sessions">
     Working: 1/4
   </text>
   <!-- END TOP AREA -->

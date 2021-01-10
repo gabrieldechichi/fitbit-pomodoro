@@ -29,6 +29,8 @@
 }
 
 .pomo-sessions {
+  x:5;
+  y:50%-20;
   text-anchor: start;
   font-size: 35;
   fill: white;
