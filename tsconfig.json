@@ -3,12 +3,17 @@
   "compilerOptions": {
     "types": [
       "jest",
+      "node"
     ],
     "plugins": [
       {
         "transform": "ts-auto-mock/transformer",
         "cacheBetweenTests": false
       }
-    ]
+    ],
+    "lib": [
+      "es6",
+      "dom"
+    ],
   }
 }
