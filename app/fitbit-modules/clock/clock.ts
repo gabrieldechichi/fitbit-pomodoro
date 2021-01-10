@@ -1,4 +1,5 @@
 import clock, { TickEvent } from "clock"
+import { Delegate } from '../../common/delegate';
 
 export enum ClockGranularity {
     Off = 'off',
@@ -13,27 +14,23 @@ export type ClockTickEvent = (date: Date) => void
  * Clock core class
  */
 export class Clock {
-    clockCallbacks: ClockTickEvent[] = []
+    clockCallbacks: Delegate<Date>
 
     constructor(granularity: ClockGranularity) {
         clock.granularity = granularity;
         clock.addEventListener("tick", this.onTick.bind(this))
+        this.clockCallbacks = new Delegate<Date>()
     }
 
     public registerClockCallback(callback: ClockTickEvent) {
-        this.clockCallbacks[this.clockCallbacks.length] = callback
+        this.clockCallbacks.addEventListener(callback)
     }
 
     public deregisterClockCallback(callback: ClockTickEvent) {
-        this.clockCallbacks.splice(this.clockCallbacks.indexOf(callback), 1)
+        this.clockCallbacks.removeEventListener(callback)
     }
 
     private onTick(event: TickEvent) {
-        for (let i = 0; i < this.clockCallbacks.length; i++) {
-            const callback = this.clockCallbacks[i];
-            if (callback) {
-                callback(event.date)
-            }
-        }
+        this.clockCallbacks.emit(event.date)
     }
 }

@@ -4,6 +4,7 @@ import { Logger } from 'ts-log';
 import { createMock } from "ts-auto-mock"
 import { On, method } from "ts-auto-mock/extension"
 import { EventEmitter } from '../../../app/common/eventEmitter';
+import { Delegate } from '../../../app/common/delegate';
 
 let pomodoro: Pomodoro = null
 let pomodoroSettings: PomodoroSettings = null
@@ -58,14 +59,14 @@ describe('state control', () => {
 })
 
 describe('state transition', () => {
-    let eventEmitter: EventEmitter<Record<string, Date>> = null
+    let delegate: Delegate<Date> = null
 
     beforeAll(() => {
-        eventEmitter = new EventEmitter()
+        delegate = new Delegate()
         const mockedMethod = On(clock).get(method(c => c.registerClockCallback))
         mockedMethod.mockImplementation(jest.fn((callback: ClockTickEvent) => {
-            if (eventEmitter) {
-                eventEmitter.addEventListener('tick', callback)
+            if (delegate) {
+                delegate.addEventListener(callback)
             }
         }))
     })
@@ -76,7 +77,7 @@ describe('state transition', () => {
     })
 
     afterEach(() => {
-        eventEmitter = new EventEmitter()
+        delegate = new Delegate()
     })
 
     test('switch to Resting when Working is done', () => {
@@ -87,11 +88,11 @@ describe('state transition', () => {
         expect(pomodoro.getState()).toBe(PomodoroState.Working)
 
         now += pomodoroSettings.workTimeSeconds * 1000 * 0.5
-        eventEmitter.emit('tick', null)
+        delegate.emit(null)
         expect(pomodoro.getState()).toBe(PomodoroState.Working)
 
         now += pomodoroSettings.workTimeSeconds * 1000 * 0.5
-        eventEmitter.emit('tick', null)
+        delegate.emit(null)
         expect(pomodoro.getState()).toBe(PomodoroState.Resting)
     })
 })
