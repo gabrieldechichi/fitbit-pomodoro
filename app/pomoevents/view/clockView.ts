@@ -3,6 +3,8 @@ import { ViewElements } from './elements';
 
 export class ClockView {
     clock: Clock
+    private static months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+        "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     constructor(clock: Clock) {
         this.clock = clock
@@ -15,13 +17,21 @@ export class ClockView {
 
         if (hours < 12) {
             amPm = "AM"
+            if (hours === 12) {
+                hours -= 12
+            }
         } else {
             amPm = "PM"
-            hours -= 12
+            if (hours !== 12) {
+                hours -= 12
+            }
         }
 
         const minutes = date.getMinutes()
         ViewElements.txtClock.text = `${this.zeroPad(hours)}:${this.zeroPad(minutes)} ${amPm}`
+
+        ViewElements.txtCalendarDay.text = `${date.getDate()}`
+        ViewElements.txtCalendarMonth.text = `${ClockView.months[date.getMonth()]}`
     }
 
     private zeroPad(n: number): string {

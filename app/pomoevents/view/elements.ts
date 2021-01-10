@@ -16,4 +16,6 @@ export class ViewElements {
     static pomodoroProgress: RectElement = document.getElementById('pomodoro-progress') as RectElement
 
     static txtClock: GraphicsElement = document.getElementById('clock-time') as GraphicsElement
+    static txtCalendarDay: GraphicsElement = document.getElementById('calendar-day') as GraphicsElement
+    static txtCalendarMonth: GraphicsElement = document.getElementById('calendar-month') as GraphicsElement
 }

@@ -1,8 +1,13 @@
 <svg id="pomodoro-view">
   <!-- TOP AREA -->
-  <text id="clock-time" class="clock-time" x="5%" y="35">
+  <text id="clock-time" class="clock-time">
     13:24
   </text>
+  <image class="calendar-icon" href="icons/calendar.png">
+    <text id="calendar-month" class="calendar-month">Apr</text>
+    <text id="calendar-day" class="calendar-day">12</text>
+  </image>
+
   <text id="sessions-counter" class="pomo-sessions" x="5%" y="50%-20">
     Working: 1/4
   </text>

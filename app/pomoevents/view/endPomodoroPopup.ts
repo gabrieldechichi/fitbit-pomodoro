@@ -28,7 +28,7 @@ export class EndPomodoroSessionPopup extends Popup {
     private getEndOfSessionMessage(state: PomodoroState): string {
         switch (state) {
             case PomodoroState.Working:
-                return "Work"
+                return "Focus"
             case PomodoroState.Resting:
                 return "Rest"
         }

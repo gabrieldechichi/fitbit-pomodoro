@@ -205,13 +205,13 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     private getStateName(state: PomodoroState): string {
         switch (state) {
             case PomodoroState.Working:
-                return 'Working'
+                return 'Focus'
             case PomodoroState.Resting:
-                return 'Resting'
+                return 'Rest'
             case PomodoroState.Paused:
                 return 'Paused'
             case PomodoroState.Idle:
-                return 'Stopped'
+                return 'Start'
             default:
                 this.logger.warn(`Unexpected Pomodoro State ${state}`)
         }

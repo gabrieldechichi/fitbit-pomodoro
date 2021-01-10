@@ -20,9 +20,9 @@
 
 .pomo-countdown {
   x: 5%;
-  y: 90%;
+  y: 88%;
   text-anchor: start;
-  font-size: 85;
+  font-size: 88;
   font-weight: regular;
   fill: white;
   font-family: Seville-Regular;
@@ -30,18 +30,43 @@
 
 .pomo-sessions {
   text-anchor: start;
-  font-size: 30;
-  font-weight: regular;
+  font-size: 35;
   fill: white;
-  font-family: Colfax-Light;
+  font-family: Colfax-Regular;
 }
 
 .clock-time {
+  x: 5%;
+  y: 35;
   text-anchor: start;
-  font-size: 30;
-  font-weight: regular;
+  font-size: 32;
   fill: white;
-  font-family: Colfax-Light;
+  font-family: Colfax-Regular;
+}
+
+.calendar-icon {
+  x: 53%;
+  y: 35-32;
+  width: 40;
+  height: 40;
+}
+
+.calendar-day {
+  x: 50%;
+  y: 85%;
+  text-anchor: middle;
+  font-size: 20;
+  fill: black;
+  font-family: Colfax-Bold;
+}
+
+.calendar-month {
+  x: 50%;
+  y: 28%;
+  text-anchor: middle;
+  font-size: 12;
+  fill: white;
+  font-family: Colfax-Bold;
 }
 
 .pomo-end-session-text {
