@@ -20,4 +20,8 @@ export class AppRuntime {
     static getHeightPercent(percent: number) {
         return this.getScreen().height * percent
     }
+
+    static setTimeoutEnabled(enabled: boolean) {
+        me.appTimeoutEnabled = enabled
+    }
 }

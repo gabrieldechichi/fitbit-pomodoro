@@ -4,6 +4,7 @@ import { LoggerFactory } from './pomoevents/components/logger';
 import { ViewController } from './pomoevents/view/viewController';
 import { AppInput } from './pomoevents/input/appInput';
 import { Clock, ClockGranularity } from './fitbit-modules/clock/clock';
+import { AppRuntime } from './pomoevents/device/appRuntime';
 
 export class App {
     logger: Logger
@@ -18,5 +19,7 @@ export class App {
         this.pomodoro = new Pomodoro(PomodoroSettings.getSettings(), this.clock, this.logger)
         this.input = new AppInput(this.logger)
         this.view = new ViewController(this.logger, this.pomodoro, this.clock, this.input)
+
+        AppRuntime.setTimeoutEnabled(false)
     }
 }
