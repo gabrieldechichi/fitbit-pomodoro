@@ -28,7 +28,9 @@ export class Clock {
             clock.granularity = ClockGranularity.Off
             clock.ontick = null
             this.date = new Date()
-            this.timeoutRoutine = setInterval(this.onIntervalTick.bind(this), 1000);
+            this.timeoutRoutine = setInterval(
+                this.onIntervalTick.bind(this),
+                this.getTimeoutForGranularity(granularity));
         } else {
             clock.granularity = granularity;
             clock.addEventListener("tick", this.onFitbitClockTick.bind(this))
