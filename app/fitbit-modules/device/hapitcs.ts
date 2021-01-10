@@ -1,5 +1,5 @@
 import { vibration, VibrationPatternName } from "haptics";
-import { Dictionary } from "../coretypes/dictionary";
+import { Dictionary } from "../../pomoevents/coretypes/dictionary";
 
 export enum VibrationPattern {
     Alert = 'alert',

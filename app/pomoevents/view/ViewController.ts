@@ -1,7 +1,7 @@
 import { Logger } from 'ts-log';
 import { Pomodoro } from '../components/pomodoro';
 import { PomodoroView } from './pomodoroView';
-import { AppInput, EventCalbackResponse, HardwareKeyType } from '../input/appInput';
+import { AppInput, EventCalbackResponse, HardwareKeyType } from '../../fitbit-modules/input/appInput';
 import { PanoramaViewController } from '../../fitbit-modules/panorama/panoramaView';
 import { ExitAppView } from './exitAppView';
 import { ClockView } from './clockView';

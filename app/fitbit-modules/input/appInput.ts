@@ -1,6 +1,6 @@
 import document from 'document'
 import { Logger } from 'ts-log';
-import { Dictionary } from '../coretypes/dictionary';
+import { Dictionary } from '../../pomoevents/coretypes/dictionary';
 
 export enum HardwareKeyType {
     Down = 'down',

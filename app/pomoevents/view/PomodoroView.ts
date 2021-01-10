@@ -2,13 +2,13 @@ import { Pomodoro, PomodoroState, PomodoroStateEvent, PomodoroEventListener } fr
 import { Logger } from 'ts-log';
 import { ViewElements } from './elements';
 import { ClockFormatter, ClockFormatterSettings } from './clockFormatter';
-import { Hapitcs, VibrationPattern } from '../device/hapitcs';
+import { Hapitcs, VibrationPattern } from '../../fitbit-modules/device/hapitcs';
 import { PanoramaView } from '../../fitbit-modules/panorama/panoramaView';
 import { EndPomodoroSessionPopup } from './endPomodoroPopup';
-import { AppRuntime } from '../device/appRuntime';
+import { AppRuntime } from '../../fitbit-modules/device/appRuntime';
 import { DuplicateEventPreventer } from '../../fitbit-modules/panorama/duplicateEventPreventer';
 import { ViewController } from './ViewController';
-import { Display } from '../device/display';
+import { Display } from '../../fitbit-modules/device/display';
 
 class ButtonIcon {
     icon: string
