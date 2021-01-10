@@ -9,6 +9,7 @@ import { AppRuntime } from '../../fitbit-modules/device/appRuntime';
 import { DuplicateEventPreventer } from '../../fitbit-modules/panorama/duplicateEventPreventer';
 import { ViewController } from './ViewController';
 import { Display } from '../../fitbit-modules/device/display';
+import { ButtonEventWrapper } from './buttonEventWrapper';
 
 class ButtonIcon {
     icon: string
@@ -37,7 +38,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     private clockFormatter: ClockFormatter
     private hapitcs: Hapitcs
     private isSkipping: boolean = false
-    private duplicateEventPreventer: DuplicateEventPreventer
+    private buttonEventWrapper: ButtonEventWrapper
 
     constructor(logger: Logger, pomodoro: Pomodoro, panoramaItem: Element, controller: ViewController) {
         super(panoramaItem, controller)
@@ -47,13 +48,13 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         this.endSessionPopup.onPopupClicked = this.onEndSessionPopupClicked.bind(this)
         this.clockFormatter = new ClockFormatter(ClockFormatterSettings.getSettings())
         this.hapitcs = new Hapitcs()
-        this.duplicateEventPreventer = new DuplicateEventPreventer(this.logger)
+        this.buttonEventWrapper = new ButtonEventWrapper(this.logger, this.hapitcs)
 
         this.pomodoro.registerListener(this)
 
-        this.duplicateEventPreventer.addWrappedEventListener(ViewElements.btnToggle, 'activate', this.onToggleButtonPressed.bind(this))
-        this.duplicateEventPreventer.addWrappedEventListener(ViewElements.btnSkip, 'activate', this.onSkipButtonPressed.bind(this))
-        this.duplicateEventPreventer.addWrappedEventListener(ViewElements.btnReset, 'activate', this.onResetButtonPressed.bind(this))
+        this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnToggle, 'activate', this.onToggleButtonPressed.bind(this))
+        this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnSkip, 'activate', this.onSkipButtonPressed.bind(this))
+        this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnReset, 'activate', this.onResetButtonPressed.bind(this))
 
         this.updateElements(this.pomodoro.getState())
     }

@@ -1,6 +1,6 @@
 import { Logger } from 'ts-log';
 
-type EventListenerCallback = (event: Event) => void
+export type EventListenerCallback = (event: Event) => void
 
 type ElementEventCallTimestamps = {
     [EventName in string]: number
@@ -38,27 +38,30 @@ export class DuplicateEventPreventer {
 
     private eventListenerWrapper(elementId: string, callback: EventListenerCallback): EventListenerCallback {
         return (evt: Event) => {
-            if (!callback) {
-                return
-            }
-
-            const now = Date.now()
-
-            if (this.elementEventCalls[elementId]) {
-                const lastValidCallForEvent = this.elementEventCalls[elementId][evt.type]
-                if (lastValidCallForEvent) {
-                    if (now - lastValidCallForEvent < this.preventDelayEpislonMs) {
-                        return
-                    }
-                }
-            } else {
-                this.elementEventCalls[elementId] = {}
-            }
-
-            if (callback) {
-                this.elementEventCalls[elementId][evt.type] = now
-                callback(evt)
-            }
+            this.safeRaiseCallback(evt, elementId, callback)
         }
+    }
+
+    protected safeRaiseCallback(evt: Event, elementId: string, callback: EventListenerCallback): boolean {
+        if (!callback) {
+            return false
+        }
+
+        const now = Date.now()
+
+        if (this.elementEventCalls[elementId]) {
+            const lastValidCallForEvent = this.elementEventCalls[elementId][evt.type]
+            if (lastValidCallForEvent) {
+                if (now - lastValidCallForEvent < this.preventDelayEpislonMs) {
+                    return false
+                }
+            }
+        } else {
+            this.elementEventCalls[elementId] = {}
+        }
+
+        this.elementEventCalls[elementId][evt.type] = now
+        callback(evt)
+        return true
     }
 }

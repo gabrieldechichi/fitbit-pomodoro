@@ -28,13 +28,13 @@ class VibrationConfig {
 
 const vibrationConfigs: Dictionary<VibrationPattern, VibrationConfig> = {
     [VibrationPattern.Alert]: new VibrationConfig(VibrationPattern.Alert, 3),
-    [VibrationPattern.Bump]: new VibrationConfig(VibrationPattern.Bump, 3),
-    [VibrationPattern.Confirmation]: new VibrationConfig(VibrationPattern.Confirmation, 3),
-    [VibrationPattern.ConfirmationMax]: new VibrationConfig(VibrationPattern.ConfirmationMax, 3),
-    [VibrationPattern.Nudge]: new VibrationConfig(VibrationPattern.Nudge, 3),
-    [VibrationPattern.NudgeMax]: new VibrationConfig(VibrationPattern.NudgeMax, 3),
-    [VibrationPattern.Ping]: new VibrationConfig(VibrationPattern.Ping, 3),
-    [VibrationPattern.Ring]: new VibrationConfig(VibrationPattern.Ring, 3),
+    [VibrationPattern.Bump]: new VibrationConfig(VibrationPattern.Bump, 0.5),
+    [VibrationPattern.Confirmation]: new VibrationConfig(VibrationPattern.Confirmation, 0.5),
+    [VibrationPattern.ConfirmationMax]: new VibrationConfig(VibrationPattern.ConfirmationMax, 0.5),
+    [VibrationPattern.Nudge]: new VibrationConfig(VibrationPattern.Nudge, 1),
+    [VibrationPattern.NudgeMax]: new VibrationConfig(VibrationPattern.NudgeMax, 1),
+    [VibrationPattern.Ping]: new VibrationConfig(VibrationPattern.Ping, 1),
+    [VibrationPattern.Ring]: new VibrationConfig(VibrationPattern.Ring, 5),
 }
 
 export class Hapitcs {
