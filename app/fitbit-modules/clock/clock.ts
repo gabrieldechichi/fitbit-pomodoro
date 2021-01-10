@@ -8,6 +8,11 @@ export enum ClockGranularity {
     Hours = 'hours'
 }
 
+export enum TickMode {
+    OnlyWhenDisplayIsOn = 0,
+    TickOnBackground
+}
+
 export type ClockTickEvent = (date: Date) => void
 
 /**
@@ -15,10 +20,19 @@ export type ClockTickEvent = (date: Date) => void
  */
 export class Clock {
     clockCallbacks: Delegate<Date>
+    timeoutRoutine: number
+    date: Date
 
-    constructor(granularity: ClockGranularity) {
-        clock.granularity = granularity;
-        clock.addEventListener("tick", this.onTick.bind(this))
+    constructor(granularity: ClockGranularity, tickMode: TickMode = TickMode.OnlyWhenDisplayIsOn) {
+        if (tickMode === TickMode.TickOnBackground) {
+            clock.granularity = ClockGranularity.Off
+            clock.ontick = null
+            this.date = new Date()
+            this.timeoutRoutine = setInterval(this.onIntervalTick.bind(this), 1000);
+        } else {
+            clock.granularity = granularity;
+            clock.addEventListener("tick", this.onFitbitClockTick.bind(this))
+        }
         this.clockCallbacks = new Delegate<Date>()
     }
 
@@ -30,7 +44,29 @@ export class Clock {
         this.clockCallbacks.removeEventListener(callback)
     }
 
-    private onTick(event: TickEvent) {
-        this.clockCallbacks.emit(event.date)
+    private onFitbitClockTick(event: TickEvent) {
+        this.onTick(event.date)
+    }
+
+    private onIntervalTick() {
+        this.date.setTime(Date.now())
+        this.onTick(this.date)
+    }
+
+    private onTick(date: Date) {
+        this.clockCallbacks.emit(date)
+    }
+
+    private getTimeoutForGranularity(granularity: ClockGranularity): number {
+        switch (granularity) {
+            case ClockGranularity.Hours:
+                return 1000 * 60 * 60
+            case ClockGranularity.Minutes:
+                return 1000 * 60
+            case ClockGranularity.Seconds:
+                return 1000
+        }
+
+        throw new Error(`Unexpected granularity: ${granularity}`)
     }
 }
