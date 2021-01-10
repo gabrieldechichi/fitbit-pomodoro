@@ -1,8 +1,8 @@
-import { Logger } from 'ts-log';
+import { dummyLogger, Logger } from 'ts-log';
 
 export class LoggerFactory {
     public static createLogger(): Logger {
-        return new DebugLogger()
+        return dummyLogger
     }
 }
 

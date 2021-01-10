@@ -7,7 +7,8 @@ import { PanoramaView } from '../../fitbit-modules/panorama/panoramaView';
 import { EndPomodoroSessionPopup } from './endPomodoroPopup';
 import { AppRuntime } from '../device/appRuntime';
 import { DuplicateEventPreventer } from '../../fitbit-modules/panorama/duplicateEventPreventer';
-import { AppPanoramaViews, ViewController } from './ViewController';
+import { ViewController } from './ViewController';
+import { Display } from '../device/display';
 
 class ButtonIcon {
     icon: string
@@ -60,6 +61,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     private notifyPomodoroSessionEnd() {
         const isTransitioningFromWorkOrRest = [PomodoroState.Working, PomodoroState.Resting].indexOf(this.pomodoro.getPreviousState()) >= 0
         if (isTransitioningFromWorkOrRest && !this.isSkipping) {
+            Display.poke()
             this.hapitcs.playVibration(VibrationPattern.Alert, 3, () => this.endSessionPopup.dismiss())
             this.showSessionEndedPopup()
         }

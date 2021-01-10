@@ -21,9 +21,7 @@
     "appDisplayName": "Focus - Pomodoro",
     "iconFile": "resources/icon.png",
     "wipeColor": "#ffffff",
-    "requestedPermissions": [
-      "run_background"
-    ],
+    "requestedPermissions": [],
     "buildTargets": [
       "meson",
       "higgs"
