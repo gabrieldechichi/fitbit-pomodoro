@@ -19,56 +19,64 @@
 }
 
 .pomo-countdown {
-  x: 5%;
-  y: 88%;
-  text-anchor: start;
-  font-size: 88;
-  font-weight: regular;
+  x: 50%;
+  y: 55%;
+  text-anchor: middle;
+  font-size: 72;
   fill: white;
   font-family: Seville-Regular;
 }
 
-.pomo-sessions {
-  x:5;
-  y:50%-20;
-  text-anchor: start;
-  font-size: 35;
+.session-name {
+  x:50%;
+  y:55%+45;
+  text-anchor: middle;
+  font-size: 28;
   fill: white;
-  font-family: Colfax-Regular;
+  font-family: Seville-Bold;
+}
+
+.session-counter {
+  x:50%;
+  y:55%+75;
+  text-anchor: middle;
+  font-size: 24;
+  fill: white;
+  font-family: Seville-Regular;
 }
 
 .clock-time {
   x: 5%;
-  y: 35;
+  y: 32;
   text-anchor: start;
-  font-size: 32;
+  font-size: 28;
   fill: white;
-  font-family: Colfax-Regular;
+  font-family: Seville-Regular;
 }
 
 .calendar-icon {
-  x: 53%;
-  y: 35-32;
-  width: 40;
-  height: 40;
+  x: 50%;
+  y: 35-30;
+  width: 32;
+  height: 32;
 }
 
 .calendar-day {
   x: 50%;
   y: 85%;
   text-anchor: middle;
-  font-size: 20;
+  font-size: 16;
   fill: black;
-  font-family: Colfax-Bold;
+  font-family: Seville-Bold;
 }
 
 .calendar-month {
   x: 50%;
   y: 28%;
   text-anchor: middle;
-  font-size: 12;
+  font-size: 10;
   fill: white;
-  font-family: Colfax-Bold;
+  font-family: Seville-Bold;
 }
 
 .pomo-end-session-text {
@@ -76,11 +84,54 @@
   font-size: 40;
   font-weight: regular;
   fill: white;
-  font-family: Colfax-Regular;
+  font-family: Seville-Regular;
 }
 
-.pomo-gradient-green { gradient-color1: fb-green;   gradient-color2: fb-mint; gradient-x1: 0; gradient-x2: 0;}
-.pomo-gradient-red { gradient-color1: red;   gradient-color2: tomato; gradient-x1: 0; gradient-x2: 0;}
-.pomo-gradient-blue-light { gradient-color1: fb-blue;   gradient-color2: fb-aqua;}
-.pomo-gradient-blue-dark { gradient-color1: "#103d70";   gradient-color2: "#02b7db"; gradient-x1: 0; gradient-x2: 0;}
-.pomo-gradient-grey { gradient-color1: "#02080e";   gradient-color2: "#688287"; gradient-x1: 0; gradient-x2: 0;}
+.pomo-arc {
+  x:11%;
+  y:15%;
+  width:78%;
+  height:78%;
+  fill:red;
+  arc-width:8;
+  start-angle:0;
+  sweep-angle:360
+}
+
+.pomo-arc-working {
+  fill: "#51c76f"
+}
+
+.pomo-arc-resting {
+  fill: "#42a95c"
+}
+
+.pomo-arc-paused {
+  fill: "#077f97"
+}
+
+.pomo-arc-idle {
+  fill: "#363636"
+}
+
+.pomo-bg-resting {
+  fill: "#58da79";
+}
+
+.pomo-bg-working {
+  fill: "#f23e3c";
+}
+
+.pomo-bg-paused {
+  fill: "#04a2c2";
+}
+
+.pomo-bg-idle {
+  fill: "#596061";
+}
+
+.shadown {
+  fill:"black";
+  y:15%+4;
+  opacity:0.2
+}

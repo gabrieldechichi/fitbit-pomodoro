@@ -1,25 +1,31 @@
 <svg id="pomodoro-view">
-  <!-- TOP AREA -->
-  <text id="clock-time" class="clock-time">
-    13:24
+  <arc id="pomo-arc-shadow" class="pomo-arc shadown" y="15%+4" x="11%-2"/>
+  <arc id="pomo-arc-bg" class="pomo-arc" fill="white"/>
+  <arc id="pomo-arc" class="pomo-arc pomo-arc-idle" sweep-angle="76" />
+
+  <text id="countdown-counter-shadown" class="pomo-countdown shadown" y="55%+4" x="50%-2">
+    24:59
   </text>
+  <text id="countdown-counter" class="pomo-countdown">
+    24:59
+  </text>
+
+  <text id="session-name" class="session-name">
+    Working
+  </text>
+
+  <text id="sessions-counter" class="session-counter">
+    1/2
+  </text>
+
+  <text id="clock-time" class="clock-time">
+    01:24 PM
+  </text>
+
   <image class="calendar-icon" href="icons/calendar.png">
     <text id="calendar-month" class="calendar-month">Apr</text>
     <text id="calendar-day" class="calendar-day">12</text>
   </image>
-
-  <text id="sessions-counter" class="pomo-sessions">
-    Working: 1/4
-  </text>
-  <!-- END TOP AREA -->
-
-  <line x1="0" y1="50%" x2="100%" y2="50%" fill="fb-white" stroke-width="3" />
-
-  <!-- BOTTOM AREA -->
-  <text id="countdown-counter" class="pomo-countdown">
-    24:59
-  </text>
-  <!-- END BOTTOM AREA -->
 
   <!-- BUTTONS -->
   <svg>

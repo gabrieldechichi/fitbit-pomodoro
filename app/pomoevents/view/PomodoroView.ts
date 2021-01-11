@@ -189,13 +189,13 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     private getProgressGradientForState(state: PomodoroState): string {
         switch (state) {
             case PomodoroState.Working:
-                return 'pomo-gradient-red'
+                return 'pomo-bg-working'
             case PomodoroState.Resting:
-                return 'pomo-gradient-green'
+                return 'pomo-bg-resting'
             case PomodoroState.Paused:
-                return 'pomo-gradient-blue-dark'
+                return 'pomo-bg-paused'
             case PomodoroState.Idle:
-                return 'pomo-gradient-grey'
+                return 'pomo-bg-idle'
             default:
                 this.logger.warn(`Unexpected Pomodoro State ${state}`)
         }
