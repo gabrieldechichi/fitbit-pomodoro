@@ -18,7 +18,7 @@
   "fitbit": {
     "appUUID": "e54c5acc-2325-4d73-912e-7d37b004f84f",
     "appType": "app",
-    "appDisplayName": "Focus - Pomodoro",
+    "appDisplayName": "Just Focus",
     "iconFile": "resources/icon.png",
     "wipeColor": "#ffffff",
     "requestedPermissions": [],
