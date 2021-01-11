@@ -31,7 +31,7 @@
   x:50%;
   y:55%+45;
   text-anchor: middle;
-  font-size: 28;
+  font-size: 32;
   fill: white;
   font-family: Seville-Bold;
 }
@@ -40,7 +40,7 @@
   x:50%;
   y:55%+75;
   text-anchor: middle;
-  font-size: 24;
+  font-size: 28;
   fill: white;
   font-family: Seville-Regular;
 }
@@ -115,7 +115,7 @@
 }
 
 .pomo-bg-resting {
-  fill: "#58da79";
+  fill: "#53cd72";
 }
 
 .pomo-bg-working {
@@ -132,6 +132,5 @@
 
 .shadow {
   fill:"black";
-  y:15%+4;
-  opacity:0.2
+  opacity:0.3
 }

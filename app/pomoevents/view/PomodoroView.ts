@@ -108,7 +108,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         const targetTime = this.pomodoro.getTargetSessionTimeForCurrentState()
 
         const percentProgress = (targetTime - remainingTimeMs) / targetTime
-        ViewElements.pomodoroProgress.sweepAngle = 360 * percentProgress
+        ViewElements.pomodoroProgress.sweepAngle = Math.ceil(360 * percentProgress)
     }
     //End callbacks
 

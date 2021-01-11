@@ -3,8 +3,8 @@ import { Clock, ClockGranularity } from '../../fitbit-modules/clock/clock';
 
 export class PomodoroSettings {
     workTimeSeconds: number = 25 * 60
-    shortBreakTimeSeconds: number = 3 * 60
-    longBreakTimeSeconds: number = 10 * 60
+    shortBreakTimeSeconds: number = 5 * 60
+    longBreakTimeSeconds: number = 15 * 60
     numberOfSessionsBeforeBreak: number = 4
 
     static getSettings(): PomodoroSettings {
