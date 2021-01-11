@@ -4,19 +4,18 @@
   <link rel='import' href='/mnt/sysassets/widgets/pagination_dots.gui' />
 
   <rect id="background"/>
-  <!-- PROGRESS BAR -->
-  <rect id="pomodoro-progress" width="100%" height="100%" class="pomo-bg-idle" />
-  <!-- END PROGRESS BAR -->
+
+  <rect id="pomodoro-bg" width="100%" height="100%" class="pomo-bg-idle" />
 
   <!-- Panorama -->
   <symbol id='my-panorama'>
     <use id='container' href='#panoramaview' overflow='hidden'>
 
-      <use id="pomodoro-item" href="#panoramaview-item">
-        <link rel="import" href="pomodoro.gui" />
-      </use>
       <use id="close-item" href="#panoramaview-item">
         <link rel="import" href="close.gui" />
+      </use>
+      <use id="pomodoro-item" href="#panoramaview-item">
+        <link rel="import" href="pomodoro.gui" />
       </use>
 
       <!-- Have enough dots for your slides (extras are hidden) -->

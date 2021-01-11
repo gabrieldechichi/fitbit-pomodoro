@@ -10,6 +10,7 @@ import { DuplicateEventPreventer } from '../../fitbit-modules/panorama/duplicate
 import { ViewController } from './ViewController';
 import { Display } from '../../fitbit-modules/device/display';
 import { ButtonEventWrapper } from './buttonEventWrapper';
+import { CSSUtils } from '../../common/style/styleutils';
 
 class ButtonIcon {
     icon: string
@@ -86,7 +87,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
 
         const previousStateColor = this.getColorForState(this.pomodoro.getPreviousState())
         ViewElements.txtPomodoroSessionsCounter.style.fill = previousStateColor
-        ViewElements.txtPomodoroSessionsCounter.style.fill = previousStateColor
+        ViewElements.txtPomodoroSessionName.style.fill = previousStateColor
         ViewElements.txtPomodoroTime.style.fill = previousStateColor
     }
 
@@ -101,12 +102,13 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
     onPomodoroUpdate() {
         const remainingTimeMs = this.pomodoro.getRemainingTimeMs()
         this.clockFormatter.setMilliSeconds(remainingTimeMs)
-        ViewElements.txtPomodoroTime.text = this.clockFormatter.toString()
+        ViewElements.txtPomodoroTime.text =
+            ViewElements.txtPomodoroTimeShadown.text = this.clockFormatter.toString()
 
         const targetTime = this.pomodoro.getTargetSessionTimeForCurrentState()
 
         const percentProgress = (targetTime - remainingTimeMs) / targetTime
-        ViewElements.pomodoroProgress.width = AppRuntime.getWidthPercent(1 - percentProgress)
+        ViewElements.pomodoroProgress.sweepAngle = 360 * percentProgress
     }
     //End callbacks
 
@@ -142,7 +144,14 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         const color = this.getColorForState(state)
         ViewElements.txtPomodoroSessionsCounter.style.fill = color
         ViewElements.txtPomodoroTime.style.fill = color
-        ViewElements.pomodoroProgress.class = this.getProgressGradientForState(state)
+
+        const previousTyle = this.getPomodoroArcStyle(this.pomodoro.getPreviousState())
+        const newStyle = this.getPomodoroArcStyle(state)
+        CSSUtils.replaceElementClass(ViewElements.pomodoroProgress, previousTyle, newStyle)
+
+        const previousBg = this.getPomodoroBgStyle(this.pomodoro.getPreviousState())
+        const newBg = this.getPomodoroBgStyle(state)
+        CSSUtils.replaceElementClass(ViewElements.pomodoroBg, previousBg, newBg)
 
         //Update button icons
         const playPauseIcon = this.getToggleButtonIconForState(state)
@@ -155,8 +164,9 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         //Update sessions count
         const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
         const remainingSessionsToLongBreak = this.pomodoro.getWorkSessionNumber()
-        const stateName = this.getStateName(state)
-        ViewElements.txtPomodoroSessionsCounter.text = `${stateName}: ${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
+
+        ViewElements.txtPomodoroSessionsCounter.text = `${remainingSessionsToLongBreak}/${sessionsToLongBreak}`
+        ViewElements.txtPomodoroSessionName.text = this.getStateName(state)
 
         this.onPomodoroUpdate()
     }
@@ -186,7 +196,23 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         return ""
     }
 
-    private getProgressGradientForState(state: PomodoroState): string {
+    private getPomodoroArcStyle(state: PomodoroState): string {
+        switch (state) {
+            case PomodoroState.Working:
+                return 'pomo-arc-working'
+            case PomodoroState.Resting:
+                return 'pomo-arc-resting'
+            case PomodoroState.Paused:
+                return 'pomo-arc-paused'
+            case PomodoroState.Idle:
+                return 'pomo-arc-idle'
+            default:
+                this.logger.warn(`Unexpected Pomodoro State ${state}`)
+        }
+        return ""
+    }
+
+    private getPomodoroBgStyle(state: PomodoroState): string {
         switch (state) {
             case PomodoroState.Working:
                 return 'pomo-bg-working'

@@ -12,8 +12,12 @@ export class ViewElements {
     static btnReset: GraphicsElement = document.getElementById('btn-x') as GraphicsElement
 
     static txtPomodoroTime: GraphicsElement = document.getElementById('countdown-counter') as GraphicsElement
+    static txtPomodoroTimeShadown: GraphicsElement = document.getElementById('countdown-counter-shadow') as GraphicsElement
+
     static txtPomodoroSessionsCounter: GraphicsElement = document.getElementById('sessions-counter') as GraphicsElement
-    static pomodoroProgress: RectElement = document.getElementById('pomodoro-progress') as RectElement
+    static txtPomodoroSessionName: GraphicsElement = document.getElementById('session-name') as GraphicsElement
+    static pomodoroProgress: ArcElement = document.getElementById('pomo-arc') as ArcElement
+    static pomodoroBg: RectElement = document.getElementById('pomodoro-bg') as RectElement
 
     static txtClock: GraphicsElement = document.getElementById('clock-time') as GraphicsElement
     static txtCalendarDay: GraphicsElement = document.getElementById('calendar-day') as GraphicsElement

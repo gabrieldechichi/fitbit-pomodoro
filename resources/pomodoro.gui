@@ -1,9 +1,9 @@
 <svg id="pomodoro-view">
-  <arc id="pomo-arc-shadow" class="pomo-arc shadown" y="15%+4" x="11%-2"/>
+  <arc id="pomo-arc-shadow" class="pomo-arc shadow" y="15%+4" x="11%-2"/>
   <arc id="pomo-arc-bg" class="pomo-arc" fill="white"/>
   <arc id="pomo-arc" class="pomo-arc pomo-arc-idle" sweep-angle="76" />
 
-  <text id="countdown-counter-shadown" class="pomo-countdown shadown" y="55%+4" x="50%-2">
+  <text id="countdown-counter-shadow" class="pomo-countdown shadow" y="55%+4" x="50%-2">
     24:59
   </text>
   <text id="countdown-counter" class="pomo-countdown">

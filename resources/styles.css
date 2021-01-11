@@ -99,7 +99,7 @@
 }
 
 .pomo-arc-working {
-  fill: "#51c76f"
+  fill: "#af0909"
 }
 
 .pomo-arc-resting {
@@ -130,7 +130,7 @@
   fill: "#596061";
 }
 
-.shadown {
+.shadow {
   fill:"black";
   y:15%+4;
   opacity:0.2
