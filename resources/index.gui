@@ -4,9 +4,8 @@
   <link rel='import' href='/mnt/sysassets/widgets/pagination_dots.gui' />
 
   <rect id="background"/>
-  <!-- PROGRESS BAR -->
-  <gradientRect id="pomodoro-progress" width="100%" height="100%" class="pomo-gradient-grey" />
-  <!-- END PROGRESS BAR -->
+
+  <rect id="pomodoro-bg" width="100%" height="100%" class="pomo-bg-idle" />
 
   <!-- Panorama -->
   <symbol id='my-panorama'>
