@@ -24,7 +24,8 @@
     "requestedPermissions": [],
     "buildTargets": [
       "meson",
-      "higgs"
+      "mira",
+      "gemini"
     ],
     "i18n": {},
     "defaultLanguage": "en-US"
