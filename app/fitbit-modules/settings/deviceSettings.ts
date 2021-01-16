@@ -34,7 +34,7 @@ export class DeviceSettings<T> {
         this.onsettingschange = callback;
 
         messaging.peerSocket.addEventListener('message', this.onCompanionMessage.bind(this))
-        me.addEventListener("unload", this.saveSettings);
+        me.addEventListener("unload", this.saveSettings.bind(this));
 
         this.raiseSettingsChangedEvent()
     }
@@ -52,13 +52,18 @@ export class DeviceSettings<T> {
 
     private loadSettings() {
         try {
-            return fs.readFileSync(DeviceSettings.SETTINGS_FILE, DeviceSettings.SETTINGS_TYPE);
+            const str = fs.readFileSync(DeviceSettings.SETTINGS_FILE, DeviceSettings.SETTINGS_TYPE);
+            if (str) {
+                return JSON.parse(str)
+            } else {
+                return new this.defaultCtor()
+            }
         } catch (ex) {
             return new this.defaultCtor()
         }
     }
 
     public saveSettings() {
-        fs.writeFileSync(DeviceSettings.SETTINGS_FILE, this.settings, DeviceSettings.SETTINGS_TYPE);
+        fs.writeFileSync(DeviceSettings.SETTINGS_FILE, JSON.stringify(this.getSettings()), DeviceSettings.SETTINGS_TYPE);
     }
 }

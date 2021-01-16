@@ -73,15 +73,16 @@ describe('device settings should', () => {
     })
 
     test('save settings', () => {
-        expect(deviceSettings.getSettings()).not.toBe(dummySettings)
+        expect(deviceSettings.getSettings()).not.toStrictEqual(dummySettings)
         deviceSettings.setSettings(dummySettings)
-        expect(deviceSettings.getSettings()).toBe(dummySettings)
+        expect(deviceSettings.getSettings()).toStrictEqual(dummySettings)
 
         deviceSettings.saveSettings()
 
         expect(fs.writeFileSync).toHaveBeenCalledTimes(1)
+        expect(fs.writeFileSync).toHaveBeenCalledWith(expect.anything(), JSON.stringify(dummySettings), expect.anything())
 
         const otherDeviceSettings = new DeviceSettings(null, DummySettings)
-        expect(otherDeviceSettings.getSettings()).toBe(dummySettings)
+        expect(otherDeviceSettings.getSettings()).toStrictEqual(dummySettings)
     })
 })

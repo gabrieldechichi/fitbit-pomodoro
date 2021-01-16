@@ -6,10 +6,6 @@ export class PomodoroSettings {
     shortBreakTimeSeconds: number = 5 * 60
     longBreakTimeSeconds: number = 15 * 60
     numberOfSessionsBeforeBreak: number = 4
-
-    static getSettings(): PomodoroSettings {
-        return new PomodoroSettings()
-    }
 }
 
 export enum PomodoroState {
