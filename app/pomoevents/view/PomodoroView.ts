@@ -92,14 +92,22 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         ViewElements.txtPomodoroSessionsCounter.style.fill = previousStateColor
         ViewElements.txtPomodoroSessionName.style.fill = previousStateColor
         ViewElements.txtPomodoroTime.style.fill = previousStateColor
+
+        ViewElements.txtPomodoroTime.animate('enable')
+        ViewElements.txtPomodoroTimeShadown.animate('enable')
     }
 
     onResumed() {
         this.updateElements(this.pomodoro.getState())
+
+        ViewElements.txtPomodoroTime.animate('disable')
+        ViewElements.txtPomodoroTimeShadown.animate('disable')
     }
 
     onIdle() {
         this.updateElements(this.pomodoro.getState())
+        ViewElements.txtPomodoroTime.animate('disable')
+        ViewElements.txtPomodoroTimeShadown.animate('disable')
     }
 
     onPomodoroUpdate() {

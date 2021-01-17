@@ -4,9 +4,14 @@
   <arc id="pomo-arc" class="pomo-arc pomo-arc-idle" sweep-angle="76" />
 
   <text id="countdown-counter-shadow" class="pomo-countdown shadow" y="55%+4" x="50%-2">
+  <animate attributeName="opacity" begin="enable+1" end="disable" from="0.3" to="0" dur="0" repeatCount="indefinite" repeatDur="1" />
+  <animate attributeName="opacity" begin="enable+2" end="disable" from="0" to="0.3" dur="0" repeatCount="indefinite" repeatDur="2" />
     24:59
   </text>
+
   <text id="countdown-counter" class="pomo-countdown">
+  <animate attributeName="opacity" begin="enable+1" end="disable" from="1" to="0" dur="0" repeatCount="indefinite" repeatDur="1" />
+  <animate attributeName="opacity" begin="enable+2" end="disable" from="0" to="1" dur="0" repeatCount="indefinite" repeatDur="2" />
     24:59
   </text>
 
