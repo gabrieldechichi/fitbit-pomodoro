@@ -19,7 +19,7 @@ type AcceptableEvents = 'activate' | 'animationend' | 'animationiteration' | 'an
 export class DuplicateEventPreventer {
     logger: Logger
     elementEventCalls: ElementEventCalls = {}
-    private readonly preventDelayEpislonMs = 50
+    private readonly preventDelayEpislonMs = 100
 
     constructor(logger: Logger) {
         this.logger = logger
