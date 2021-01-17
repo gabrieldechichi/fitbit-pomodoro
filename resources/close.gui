@@ -1,8 +1,12 @@
 <svg>
     <svg>
-        <use id="btn-exit" href="#clickable-button-base" fill="fb-white" class="combo-button-close">
+        <use id="btn-exit" href="#better-button" fill="fb-white" class="combo-button-close">
             <set href="combo-button-icon" attributeName="href" to="icons/x.png" />
             <set href="combo-button-icon-press" attributeName="href" to="icons/x_press.png" />
+            <set href="touch-area" attributeName="x" to="-150%" />
+            <set href="touch-area" attributeName="y" to="-150%" />
+            <set href="touch-area" attributeName="width" to="400%" />
+            <set href="touch-area" attributeName="height" to="400%" />
         </use>
     </svg>
 </svg>
