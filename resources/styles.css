@@ -134,3 +134,10 @@
   fill:"black";
   opacity:0.3
 }
+
+.settings-text {
+  font-family: Seville-Regular;
+  text-anchor: middle;
+  fill: white;
+  font-size: 30;
+}

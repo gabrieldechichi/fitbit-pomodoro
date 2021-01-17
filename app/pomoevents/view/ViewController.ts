@@ -1,15 +1,17 @@
 import { Logger } from 'ts-log';
-import { Pomodoro } from '../components/pomodoro';
+import { Pomodoro, PomodoroState } from '../components/pomodoro';
 import { PomodoroView } from './pomodoroView';
 import { AppInput, EventCalbackResponse, HardwareKeyType } from '../../fitbit-modules/input/appInput';
 import { PanoramaViewController } from '../../fitbit-modules/panorama/panoramaView';
 import { ExitAppView } from './exitAppView';
 import { ClockView } from './clockView';
 import { Clock } from '../../fitbit-modules/clock/clock';
+import { SettingsView } from './settingsView';
 
 export enum AppPanoramaViews {
     Close = 0,
-    Pomodoro = 1
+    Pomodoro = 1,
+    Settings = 2
 }
 
 export class ViewController extends PanoramaViewController {
@@ -42,6 +44,10 @@ export class ViewController extends PanoramaViewController {
         this.pomodoroView = new PomodoroView(logger, pomodoro, pomodoroPanoramaItem, this)
         this.panoramaObjects[AppPanoramaViews.Pomodoro] = this.pomodoroView
 
+        //Create settings view
+        const settingsItem = this.items[AppPanoramaViews.Settings]
+        this.panoramaObjects[AppPanoramaViews.Settings] = new SettingsView(pomodoro.getSettings(), settingsItem, this)
+
         this.show(AppPanoramaViews.Pomodoro)
     }
 
@@ -53,7 +59,7 @@ export class ViewController extends PanoramaViewController {
     }
 
     onBackPressed(): EventCalbackResponse {
-        this.show(AppPanoramaViews.Close)
+        this.scroll(-1)
         return EventCalbackResponse.handled
     }
 }

@@ -5,8 +5,6 @@ import { ClockFormatter, ClockFormatterSettings } from './clockFormatter';
 import { Hapitcs, VibrationPattern } from '../../fitbit-modules/device/hapitcs';
 import { PanoramaView } from '../../fitbit-modules/panorama/panoramaView';
 import { EndPomodoroSessionPopup } from './endPomodoroPopup';
-import { AppRuntime } from '../../fitbit-modules/device/appRuntime';
-import { DuplicateEventPreventer } from '../../fitbit-modules/panorama/duplicateEventPreventer';
 import { ViewController } from './ViewController';
 import { Display } from '../../fitbit-modules/device/display';
 import { ButtonEventWrapper } from './buttonEventWrapper';
@@ -57,6 +55,11 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnSkip, 'activate', this.onSkipButtonPressed.bind(this))
         this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnReset, 'activate', this.onResetButtonPressed.bind(this))
 
+        this.updateElements(this.pomodoro.getState())
+    }
+
+    onShow() {
+        super.onShow()
         this.updateElements(this.pomodoro.getState())
     }
 

@@ -17,6 +17,9 @@
       <use id="pomodoro-item" href="#panoramaview-item">
         <link rel="import" href="pomodoro.gui" />
       </use>
+      <use id="settings-item" href="#panoramaview-item">
+        <link rel="import" href="settings.gui" />
+      </use>
 
       <!-- Have enough dots for your slides (extras are hidden) -->
       <use id='pagination-dots' class='pagination' href='#pagination-widget' y='95%'>

@@ -8,6 +8,29 @@
     </svg>
 </symbol>
 
+<symbol id="better-button" class='combo-button-upper-right' href='#combo-button-base' overflow='visible'>
+    <animate attributeName='fill' begin='enable' to='inherit' />
+    <animate attributeName='fill' begin='disable' to='fb-dark-gray' />
+    <animate attributeName='x' begin='expand' end='collapse' to='0' dur='0.3' final='keep' easing='ease-in-out' />
+    <animate attributeName='x' begin='collapse' end='expand' to='76' dur='0.5' final='keep' easing='ease-in-out' />
+
+    <!-- adjust x if button is in custom mode (no touch) -->
+    <animate attributeName='x' begin='custom' to='18' />
+    <!--icons and animations-->
+    <image id='combo-button-icon' fill='inherit' x='0' y='0' width='100%' height='100%'>
+        <animate attributeName='display' begin='mousedown;keydown' to='none' />
+        <animate attributeName='display' begin='mouseup;mouseout;keypress;keyup' to='inline' />
+    </image>
+    <image id='combo-button-icon-press' display='none' fill='fb-black' x='0' y='0' width='100%' height='100%'>
+        <animate attributeName='display' begin='mousedown;keydown' to='inline' />
+        <animate attributeName='display' begin='mouseup;mouseout;keypress;keyup' to='none' />
+    </image>
+    <image class='hw-indicator-dot' fill='inherit' display='none' x='0' y='0' width='100%' height='100%'>
+        <animate attributeName='display' begin='custom' to='inline' />
+    </image>
+    <rect id="touch-area" x="0" y="0" width="100%" height="100%" fill="orange" opacity="0" />
+</symbol>
+
 <!-- BUTTON SIZE ADJUST -->
 <!--<set href='#combo-button-stroke' attributeName='x' to='-10' />
       <set href='#combo-button-stroke' attributeName='y' to='-10' />

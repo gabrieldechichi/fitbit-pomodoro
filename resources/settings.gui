@@ -1,0 +1,29 @@
+<svg>
+    <symbol id="settings-line" width="96%" height="20%">
+        <text id="settings-name" x="50%" y="5%+20" class="settings-text" font-size="26">
+            Short Rest Time
+        </text>
+        <text id="settings-value" x="50%" y="90%" class="settings-text" font-family="Seville-Bold">
+            30 min
+        </text>
+
+        <use id="decrement" href="#better-button" fill="fb-white" x="2%" y="50%-25" width="50" height="50">
+            <set href="combo-button-icon" attributeName="href" to="icons/minus.png" />
+            <set href="combo-button-icon-press" attributeName="href" to="icons/minus-pressed.png" />
+            <set href="touch-area" attributeName="x" to="-100%" />
+            <set href="touch-area" attributeName="width" to="300%" />
+        </use>
+
+        <use id="increment" href="#better-button" fill="fb-white" x="98%-50" y="50%-25" width="50" height="50">
+            <set href="combo-button-icon" attributeName="href" to="icons/plus.png" />
+            <set href="combo-button-icon-press" attributeName="href" to="icons/plus-pressed.png" />
+            <set href="touch-area" attributeName="x" to="-100%" />
+            <set href="touch-area" attributeName="width" to="300%" />
+        </use>
+    </symbol>
+
+    <use id="settings-pomo-session-count" href="#settings-line" x="2%" y="3%" />
+    <use id="settings-pomo-work-time" href="#settings-line" x="2%" y="3%+22%" />
+    <use id="settings-pomo-rest-time" href="#settings-line" x="2%" y="3%+22%+22%" />
+    <use id="settings-pomo-long-rest-time" href="#settings-line" x="2%" y="3%+22%+22%+22%" />
+</svg>
