@@ -47,15 +47,13 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         this.endSessionPopup.onPopupClicked = this.onEndSessionPopupClicked.bind(this)
         this.clockFormatter = new ClockFormatter(ClockFormatterSettings.getSettings())
         this.hapitcs = new Hapitcs()
-        this.buttonEventWrapper = new ButtonEventWrapper(this.logger, this.hapitcs)
+        this.buttonEventWrapper = new ButtonEventWrapper(this.logger, this.hapitcs, this.onAnyButtonPressed.bind(this))
 
         this.pomodoro.registerListener(this)
 
         this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnToggle, 'activate', this.onToggleButtonPressed.bind(this))
         this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnSkip, 'activate', this.onSkipButtonPressed.bind(this))
         this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnReset, 'activate', this.onResetButtonPressed.bind(this))
-
-        this.buttonEventWrapper.onAnyButtonPressed.addEventListener(this.onAnyButtonPressed.bind(this))
 
         this.updateElements(this.pomodoro.getState())
     }
@@ -143,8 +141,9 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         }
     }
 
-    private onAnyButtonPressed() {
+    private onAnyButtonPressed(elementId: string): boolean {
         this.onEndSessionPopupClicked()
+        return Display.isOn()
     }
     //End Control callbacks
 

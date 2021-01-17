@@ -37,7 +37,7 @@ class PomoSettingsPropertyEditor {
 
     updateUI() {
         this.label.text = `${this.labelString}`
-        this.valueElement.text = `${this.settings[this.propertyName] / this.resolution} ${this.resolutionLabel}`.trim()
+        this.valueElement.text = `${this.getValueInResolution()} ${this.resolutionLabel}`.trim()
     }
 
     private onDecrement(evt: Event) {
@@ -49,9 +49,13 @@ class PomoSettingsPropertyEditor {
     }
 
     private changeValue(amount: number) {
-        const newValue = this.settings[this.propertyName] + amount
+        const newValue = this.getValueInResolution() * this.resolution + amount
         this.settings[this.propertyName] = Math.max(this.resolution, newValue)
         this.updateUI()
+    }
+
+    private getValueInResolution(): number {
+        return Math.ceil(this.settings[this.propertyName] / this.resolution)
     }
 }
 
