@@ -55,6 +55,8 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnSkip, 'activate', this.onSkipButtonPressed.bind(this))
         this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnReset, 'activate', this.onResetButtonPressed.bind(this))
 
+        this.buttonEventWrapper.onAnyButtonPressed.addEventListener(this.onAnyButtonPressed.bind(this))
+
         this.updateElements(this.pomodoro.getState())
     }
 
@@ -139,6 +141,10 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         if (this.isVisible()) {
             this.pomodoro.stop()
         }
+    }
+
+    private onAnyButtonPressed() {
+        this.onEndSessionPopupClicked()
     }
     //End Control callbacks
 
