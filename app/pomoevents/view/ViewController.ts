@@ -52,9 +52,11 @@ export class ViewController extends PanoramaViewController {
     }
 
     onUpOrDownButtonPressed(): EventCalbackResponse {
-        setTimeout(() => {
-            this.show(AppPanoramaViews.Pomodoro)
-        }, 10);
+        if (this.getCurrentView() != this.pomodoroView) {
+            setTimeout(() => {
+                this.show(AppPanoramaViews.Pomodoro)
+            }, 10);
+        }
         return EventCalbackResponse.handled
     }
 

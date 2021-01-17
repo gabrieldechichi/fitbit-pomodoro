@@ -10,6 +10,7 @@ export class ViewElements {
 
     static btnSkip: GraphicsElement = document.getElementById('btn-skip') as GraphicsElement
     static btnReset: GraphicsElement = document.getElementById('btn-x') as GraphicsElement
+    static btnSettings: GraphicsElement = document.getElementById('btn-settings') as GraphicsElement
 
     static txtPomodoroTime: GraphicsElement = document.getElementById('countdown-counter') as GraphicsElement
     static txtPomodoroTimeShadown: GraphicsElement = document.getElementById('countdown-counter-shadow') as GraphicsElement

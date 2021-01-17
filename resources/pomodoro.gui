@@ -44,7 +44,14 @@
       <set href="combo-button-icon" attributeName="href" to="icons/x.png"/>
       <set href="combo-button-icon-press" attributeName="href" to="icons/x_press.png"/>
     </use>
-    <!-- BOTTOM RIGHT -->
+
+    <!-- SETTINGS BUTTON - TOP RIGHT -->
+    <use id="btn-settings" href="#combo-button-upper-right" fill="fb-white">
+      <set href="combo-button-icon" attributeName="href" to="icons/gear.png" />
+      <set href="combo-button-icon-press" attributeName="href" to="icons/gear-pressed.png" />
+    </use>
+
+    <!-- BUTTON START SESSION -->
     <use id="btn-toggle" href="#combo-button-lower-right" fill="fb-white">
       <set href="combo-button-icon" attributeName="href" to="icons/play.png"/>
       <set href="combo-button-icon-press" attributeName="href" to="icons/play_press.png"/>

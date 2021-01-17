@@ -5,10 +5,11 @@ import { ClockFormatter, ClockFormatterSettings } from './clockFormatter';
 import { Hapitcs, VibrationPattern } from '../../fitbit-modules/device/hapitcs';
 import { PanoramaView } from '../../fitbit-modules/panorama/panoramaView';
 import { EndPomodoroSessionPopup } from './endPomodoroPopup';
-import { ViewController } from './ViewController';
+import { AppPanoramaViews, ViewController } from './ViewController';
 import { Display } from '../../fitbit-modules/device/display';
 import { ButtonEventWrapper } from './buttonEventWrapper';
 import { CSSUtils } from '../../common/style/styleutils';
+import { display } from 'display';
 
 class ButtonIcon {
     icon: string
@@ -54,6 +55,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnToggle, 'activate', this.onToggleButtonPressed.bind(this))
         this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnSkip, 'activate', this.onSkipButtonPressed.bind(this))
         this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnReset, 'activate', this.onResetButtonPressed.bind(this))
+        this.buttonEventWrapper.addWrappedEventListener(ViewElements.btnSettings, 'activate', this.onSettingsButtonPressed.bind(this))
 
         this.updateElements(this.pomodoro.getState())
     }
@@ -149,6 +151,12 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
         }
     }
 
+    private onSettingsButtonPressed(event: MouseEvent) {
+        if (this.isVisible()) {
+            this.getViewController().show(AppPanoramaViews.Settings)
+        }
+    }
+
     private onAnyButtonPressed(elementId: string): boolean {
         this.onEndSessionPopupClicked()
         return Display.isOn()
@@ -176,6 +184,7 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
 
         ViewElements.btnSkip.style.display = this.getSkipButtonVisibility(state)
         ViewElements.btnReset.style.display = this.getStopButtonVisibility(state)
+        ViewElements.btnSettings.style.display = this.getSettingsButtonVisibility(state)
 
         //Update sessions count
         const sessionsToLongBreak = this.pomodoro.getSettings().numberOfSessionsBeforeBreak
@@ -295,6 +304,20 @@ export class PomodoroView extends PanoramaView implements PomodoroEventListener 
             case PomodoroState.Idle:
                 return 'none'
             case PomodoroState.Paused:
+                return 'inline'
+            default:
+                this.logger.warn(`Unexpected Pomodoro State ${state}`)
+        }
+        return 'none'
+    }
+
+    private getSettingsButtonVisibility(state: PomodoroState): 'inline' | 'none' {
+        switch (state) {
+            case PomodoroState.Working:
+            case PomodoroState.Resting:
+            case PomodoroState.Paused:
+                return 'none'
+            case PomodoroState.Idle:
                 return 'inline'
             default:
                 this.logger.warn(`Unexpected Pomodoro State ${state}`)
